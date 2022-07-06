@@ -44,7 +44,7 @@ public class PhoneRepository implements CrudPhoneRepository {
         while (iterator.hasNext()) {
             final Phone phone = iterator.next();
             if (phone.getId().equals(id)) {
-                logger.info("Deleting " + phone);
+                logger.info("Deleting {}", phone);
                 iterator.remove();
                 return true;
             }

@@ -1,4 +1,4 @@
-package me.zuif.hw2.service.pen;
+package me.zuif.hw2.service;
 
 
 import me.zuif.hw2.model.pen.Pen;
@@ -30,7 +30,7 @@ public class PenService {
                     getRandomPenType(),
                     getRandomPenColor()
             );
-            logger.info("Creating " + pen);
+            logger.info("Creating {}", pen);
             pens.add(pen);
         }
         REPOSITORY.saveAll(pens);

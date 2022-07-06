@@ -1,4 +1,4 @@
-package me.zuif.hw2.service.phone;
+package me.zuif.hw2.service;
 
 
 import me.zuif.hw2.model.phone.Manufacturer;
@@ -27,7 +27,7 @@ public class PhoneService {
                     "Model-" + RANDOM.nextInt(10),
                     getRandomManufacturer()
             );
-            logger.info("Creating " + phone);
+            logger.info("Creating {}", phone);
             phones.add(phone);
         }
         REPOSITORY.saveAll(phones);

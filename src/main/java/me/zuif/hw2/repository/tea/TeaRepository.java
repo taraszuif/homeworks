@@ -44,7 +44,7 @@ public class TeaRepository implements CrudTeaRepository {
         while (iterator.hasNext()) {
             final Tea tea = iterator.next();
             if (tea.getId().equals(id)) {
-                logger.info("Deleting " + tea);
+                logger.info("Deleting {}", tea);
                 iterator.remove();
                 return true;
             }

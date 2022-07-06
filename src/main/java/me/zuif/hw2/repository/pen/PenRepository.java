@@ -44,7 +44,7 @@ public class PenRepository implements CrudPenRepository {
         while (iterator.hasNext()) {
             final Pen pen = iterator.next();
             if (pen.getId().equals(id)) {
-                logger.info("Deleting " + pen);
+                logger.info("Deleting {}", pen);
                 iterator.remove();
                 return true;
             }

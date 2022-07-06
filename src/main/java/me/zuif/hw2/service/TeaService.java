@@ -1,4 +1,4 @@
-package me.zuif.hw2.service.tea;
+package me.zuif.hw2.service;
 
 
 import me.zuif.hw2.model.tea.Tea;
@@ -28,7 +28,7 @@ public class TeaService {
                     getRandomTeaBrand(),
                     getRandomTeaType()
             );
-            logger.info("Creating " + tea);
+            logger.info("Creating {}", tea);
             teas.add(tea);
         }
         REPOSITORY.saveAll(teas);

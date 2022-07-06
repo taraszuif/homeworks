@@ -4,9 +4,9 @@ package me.zuif.hw2;
 import me.zuif.hw2.model.pen.Pen;
 import me.zuif.hw2.model.phone.Phone;
 import me.zuif.hw2.model.tea.Tea;
-import me.zuif.hw2.service.pen.PenService;
-import me.zuif.hw2.service.phone.PhoneService;
-import me.zuif.hw2.service.tea.TeaService;
+import me.zuif.hw2.service.PenService;
+import me.zuif.hw2.service.PhoneService;
+import me.zuif.hw2.service.TeaService;
 
 public class Main {
     private static final PhoneService PHONE_SERVICE = new PhoneService();
