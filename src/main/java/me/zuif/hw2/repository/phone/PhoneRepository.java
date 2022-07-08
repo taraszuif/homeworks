@@ -17,7 +17,25 @@ public class PhoneRepository implements CrudPhoneRepository {
 
     @Override
     public void save(Phone phone) {
-        phones.add(phone);
+        if (phone == null) {
+            final IllegalArgumentException exception = new IllegalArgumentException("Cannot save a null phone");
+            logger.error(exception.getMessage(), exception);
+            throw exception;
+        } else {
+            checkDuplicates(phone);
+            phones.add(phone);
+        }
+    }
+
+    private void checkDuplicates(Phone phone) {
+        for (Phone p : phones) {
+            if (phone.hashCode() == p.hashCode() && phone.equals(p)) {
+                final IllegalArgumentException exception = new IllegalArgumentException("Duplicate phone: " +
+                        phone.getId());
+                logger.error(exception.getMessage(), exception);
+                throw exception;
+            }
+        }
     }
 
     @Override

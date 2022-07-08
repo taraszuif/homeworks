@@ -4,14 +4,17 @@ package me.zuif.hw2;
 import me.zuif.hw2.model.pen.Pen;
 import me.zuif.hw2.model.phone.Phone;
 import me.zuif.hw2.model.tea.Tea;
+import me.zuif.hw2.repository.pen.PenRepository;
+import me.zuif.hw2.repository.phone.PhoneRepository;
+import me.zuif.hw2.repository.tea.TeaRepository;
 import me.zuif.hw2.service.PenService;
 import me.zuif.hw2.service.PhoneService;
 import me.zuif.hw2.service.TeaService;
 
 public class Main {
-    private static final PhoneService PHONE_SERVICE = new PhoneService();
-    private static final TeaService TEA_SERVICE = new TeaService();
-    private static final PenService PEN_SERVICE = new PenService();
+    private static final PhoneService PHONE_SERVICE = new PhoneService(new PhoneRepository());
+    private static final TeaService TEA_SERVICE = new TeaService(new TeaRepository());
+    private static final PenService PEN_SERVICE = new PenService(new PenRepository());
 
     public static void main(String[] args) {
         //PHONE
