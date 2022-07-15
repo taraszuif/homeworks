@@ -1,5 +1,6 @@
 package me.zuif.hw2.repository.tea;
 
+
 import me.zuif.hw2.model.tea.Tea;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,8 +18,27 @@ public class TeaRepository implements CrudTeaRepository {
 
     @Override
     public void save(Tea tea) {
-        teas.add(tea);
+        if (tea == null) {
+            final IllegalArgumentException exception = new IllegalArgumentException("Cannot save a null tea");
+            logger.error(exception.getMessage(), exception);
+            throw exception;
+        } else {
+            checkDuplicates(tea);
+            teas.add(tea);
+        }
     }
+
+    private void checkDuplicates(Tea tea) {
+        for (Tea p : teas) {
+            if (tea.hashCode() == p.hashCode() && tea.equals(p)) {
+                final IllegalArgumentException exception = new IllegalArgumentException("Duplicate tea: " +
+                        tea.getId());
+                logger.error(exception.getMessage(), exception);
+                throw exception;
+            }
+        }
+    }
+
 
     @Override
     public void saveAll(List<Tea> teas) {
@@ -44,7 +64,7 @@ public class TeaRepository implements CrudTeaRepository {
         while (iterator.hasNext()) {
             final Tea tea = iterator.next();
             if (tea.getId().equals(id)) {
-                logger.info("Deleting " + tea);
+                logger.info("Deleting {}", tea);
                 iterator.remove();
                 return true;
             }

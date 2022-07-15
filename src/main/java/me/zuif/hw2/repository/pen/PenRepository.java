@@ -17,7 +17,25 @@ public class PenRepository implements CrudPenRepository {
 
     @Override
     public void save(Pen pen) {
-        pens.add(pen);
+        if (pen == null) {
+            final IllegalArgumentException exception = new IllegalArgumentException("Cannot save a null pen");
+            logger.error(exception.getMessage(), exception);
+            throw exception;
+        } else {
+            checkDuplicates(pen);
+            pens.add(pen);
+        }
+    }
+
+    private void checkDuplicates(Pen pen) {
+        for (Pen p : pens) {
+            if (pen.hashCode() == p.hashCode() && pen.equals(p)) {
+                final IllegalArgumentException exception = new IllegalArgumentException("Duplicate pen: " +
+                        pen.getId());
+                logger.error(exception.getMessage(), exception);
+                throw exception;
+            }
+        }
     }
 
     @Override
@@ -44,7 +62,7 @@ public class PenRepository implements CrudPenRepository {
         while (iterator.hasNext()) {
             final Pen pen = iterator.next();
             if (pen.getId().equals(id)) {
-                logger.info("Deleting " + pen);
+                logger.info("Deleting {}", pen);
                 iterator.remove();
                 return true;
             }
