@@ -188,11 +188,6 @@ class PenRepositoryTest {
         Assertions.assertEquals(pen.getId(), actualPen.getId());
     }
 
-    @Test
-    void findById_CallRealMethod() {
-        PenRepository target = mock(PenRepository.class);
-        when(target.findById(Mockito.anyString())).thenCallRealMethod();
-    }
 
     @Test
     void findById_Argument_Matcher() {

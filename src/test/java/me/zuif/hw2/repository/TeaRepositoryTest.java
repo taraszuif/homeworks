@@ -177,11 +177,6 @@ class TeaRepositoryTest {
         Assertions.assertEquals(tea.getId(), actualTea.getId());
     }
 
-    @Test
-    void findById_CallRealMethod() {
-        TeaRepository target = mock(TeaRepository.class);
-        when(target.findById(Mockito.anyString())).thenCallRealMethod();
-    }
 
     @Test
     void findById_Argument_Matcher() {

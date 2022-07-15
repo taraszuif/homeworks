@@ -176,11 +176,6 @@ class PhoneRepositoryTest {
         Assertions.assertEquals(phone.getId(), actualPhone.getId());
     }
 
-    @Test
-    void findById_CallRealMethod() {
-        PhoneRepository target = mock(PhoneRepository.class);
-        when(target.findById(Mockito.anyString())).thenCallRealMethod();
-    }
 
     @Test
     void findById_Argument_Matcher() {
