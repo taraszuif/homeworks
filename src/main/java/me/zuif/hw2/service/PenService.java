@@ -9,10 +9,7 @@ import me.zuif.hw2.repository.pen.PenRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
 public class PenService {
     private static final Random RANDOM = new Random();
@@ -30,12 +27,7 @@ public class PenService {
         }
         List<Pen> pens = new LinkedList<>();
         for (int i = 0; i < count; i++) {
-            final Pen pen = new Pen(
-                    "Title-" + RANDOM.nextInt(1000),
-                    RANDOM.nextInt(500),
-                    RANDOM.nextDouble(1000.0),
-                    getRandomPenBrand(), getRandomPenType(), getRandomPenColor()
-            );
+            final Pen pen = getRandomPen();
             pens.add(pen);
             logger.info("Pen {} has been saved", pen.getId());
         }
@@ -64,9 +56,40 @@ public class PenService {
         repository.update(pen);
     }
 
-    public Optional<Pen> findById(String id) {
-        return repository.findById(id);
+    public Pen getRandomPen() {
+        return new Pen(
+                "Title-" + RANDOM.nextInt(1000),
+                RANDOM.nextInt(500),
+                RANDOM.nextDouble(1000.0),
+                getRandomPenBrand(), getRandomPenType(), getRandomPenColor()
+        );
     }
+
+    //ifPresentOrElse
+    public void updateOrSave(Pen pen) {
+        repository.findById(pen.getId()).ifPresentOrElse(pen1 -> update(pen1), () -> savePen(pen));
+    }
+
+    //orElseThrow
+    public Pen findByIdOrThrow(String id) {
+        return repository.findById(id).orElseThrow(IllegalArgumentException::new);
+    }
+
+    //orElseGet
+    public Pen findByIdOrGetAny(String id) {
+        return repository.findById(id).orElseGet(() -> repository.getAll().stream().findAny().get());
+    }
+
+    //orElse
+    public Pen findByIdOrGetRandom(String id) {
+        return repository.findById(id).orElse(getRandomPen());
+    }
+
+    //or
+    public Optional<Pen> findByIdOrGetFirst(String id) {
+        return repository.findById(id).or(() -> repository.getAll().stream().findFirst());
+    }
+
 
     public List<Pen> getAll() {
         return repository.getAll();
@@ -74,6 +97,22 @@ public class PenService {
 
     public void delete(String id) {
         repository.delete(id);
+    }
+
+    //ifPresent
+    public void deleteIfPresent(String id) {
+        repository.findById(id).ifPresent(pen -> {
+            repository.delete(pen.getId());
+        });
+    }
+
+    //filter
+    public List<Pen> getAllByBrand(PenBrand brand) {
+        List<Pen> filtered = new ArrayList<>();
+        for (Pen pen : repository.getAll()) {
+            Optional.of(pen).filter(penf -> penf.getBrand() == brand).ifPresent(pen1 -> filtered.add(pen1));
+        }
+        return filtered;
     }
 
     public void savePen(Pen pen) {
@@ -87,6 +126,11 @@ public class PenService {
         for (Pen pen : repository.getAll()) {
             System.out.println(pen);
         }
+    }
+
+    //map
+    public String mapToString(String id) {
+        return repository.findById(id).map(Pen::toString).get();
     }
 
 
