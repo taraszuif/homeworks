@@ -73,7 +73,7 @@ public class TeaRepository implements CrudTeaRepository {
     }
 
     @Override
-    public List<Tea> getAll() {
+    public List<Tea> findAll() {
         if (teas.isEmpty()) {
             return Collections.emptyList();
         }

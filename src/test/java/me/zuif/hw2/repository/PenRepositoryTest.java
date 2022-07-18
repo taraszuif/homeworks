@@ -39,7 +39,7 @@ class PenRepositoryTest {
     @Test
     void save() {
         target.save(pen);
-        final List<Pen> pens = target.getAll();
+        final List<Pen> pens = target.findAll();
         Assertions.assertEquals(1, pens.size());
         Assertions.assertEquals(pens.get(0).getId(), pen.getId());
     }
@@ -47,14 +47,14 @@ class PenRepositoryTest {
     @Test
     void save_putNull() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> target.save(null));
-        final List<Pen> actualResult = target.getAll();
+        final List<Pen> actualResult = target.findAll();
         Assertions.assertEquals(0, actualResult.size());
     }
 
     @Test
     void saveAll_singlePen() {
         target.saveAll(Collections.singletonList(pen));
-        final List<Pen> pens = target.getAll();
+        final List<Pen> pens = target.findAll();
         Assertions.assertEquals(1, pens.size());
         Assertions.assertEquals(pens.get(0).getId(), pen.getId());
     }
@@ -63,7 +63,7 @@ class PenRepositoryTest {
     @Test
     void saveAll_noPen() {
         target.saveAll(Collections.emptyList());
-        final List<Pen> pens = target.getAll();
+        final List<Pen> pens = target.findAll();
         Assertions.assertEquals(0, pens.size());
     }
 
@@ -73,7 +73,7 @@ class PenRepositoryTest {
                 PenType.BALLPOINT,
                 PenColor.DARK_BLUE);
         target.saveAll(List.of(pen, otherPen));
-        final List<Pen> pens = target.getAll();
+        final List<Pen> pens = target.findAll();
         Assertions.assertEquals(2, pens.size());
         Assertions.assertEquals(pens.get(0).getId(), pen.getId());
         Assertions.assertEquals(pens.get(1).getId(), otherPen.getId());
@@ -93,7 +93,7 @@ class PenRepositoryTest {
         pens.add(pen);
         pens.add(null);
         Assertions.assertThrows(IllegalArgumentException.class, () -> target.saveAll(pens));
-        final List<Pen> actualResult = target.getAll();
+        final List<Pen> actualResult = target.findAll();
         Assertions.assertEquals(1, actualResult.size());
     }
 
@@ -106,7 +106,7 @@ class PenRepositoryTest {
         final boolean result = target.update(pen);
 
         Assertions.assertTrue(result);
-        final List<Pen> actualResult = target.getAll();
+        final List<Pen> actualResult = target.findAll();
         Assertions.assertEquals(1, actualResult.size());
         Assertions.assertEquals(newTitle, actualResult.get(0).getTitle());
         Assertions.assertEquals(pen.getId(), actualResult.get(0).getId());
@@ -122,7 +122,7 @@ class PenRepositoryTest {
         final boolean result = target.update(noPen);
 
         Assertions.assertFalse(result);
-        final List<Pen> actualResult = target.getAll();
+        final List<Pen> actualResult = target.findAll();
         Assertions.assertEquals(1, actualResult.size());
         Assertions.assertEquals(pen.getId(), actualResult.get(0).getId());
         Assertions.assertEquals(pen.getCount(), actualResult.get(0).getCount());
@@ -150,7 +150,7 @@ class PenRepositoryTest {
         target.save(pen);
         final boolean result = target.delete(pen.getId());
         Assertions.assertTrue(result);
-        final List<Pen> actualResult = target.getAll();
+        final List<Pen> actualResult = target.findAll();
         Assertions.assertEquals(0, actualResult.size());
     }
 
@@ -162,20 +162,20 @@ class PenRepositoryTest {
                 PenColor.DARK_BLUE);
         final boolean result = target.delete(noPen.getId());
         Assertions.assertFalse(result);
-        final List<Pen> actualResult = target.getAll();
+        final List<Pen> actualResult = target.findAll();
         Assertions.assertEquals(1, actualResult.size());
     }
 
     @Test
     void getAll() {
         target.save(pen);
-        final List<Pen> actualResult = target.getAll();
+        final List<Pen> actualResult = target.findAll();
         Assertions.assertEquals(1, actualResult.size());
     }
 
     @Test
     void getAll_noPens() {
-        final List<Pen> actualResult = target.getAll();
+        final List<Pen> actualResult = target.findAll();
         Assertions.assertEquals(0, actualResult.size());
     }
 

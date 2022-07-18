@@ -71,7 +71,7 @@ public class PenRepository implements CrudPenRepository {
     }
 
     @Override
-    public List<Pen> getAll() {
+    public List<Pen> findAll() {
         if (pens.isEmpty()) {
             return Collections.emptyList();
         }

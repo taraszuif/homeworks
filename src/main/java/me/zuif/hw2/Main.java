@@ -18,10 +18,10 @@ public class Main {
 
     public static void main(String[] args) {
         //PHONE
-        PHONE_SERVICE.createAndSavePhones(10);
+        PHONE_SERVICE.createAndSaveProducts(10);
         System.out.println("Phones created:");
         PHONE_SERVICE.printAll();
-        Phone phone = PHONE_SERVICE.getAll().get(2);
+        Phone phone = PHONE_SERVICE.findAll().get(2);
         System.out.println("Changing the price of phone with index 2 to 100 ");
         System.out.println("Before: " + phone);
         phone.setPrice(100);
@@ -36,10 +36,10 @@ public class Main {
         System.out.println("-----------------------------------");
 
         //TEA
-        TEA_SERVICE.createAndSaveTeas(4);
+        TEA_SERVICE.createAndSaveProducts(4);
         System.out.println("Teas created:");
         TEA_SERVICE.printAll();
-        Tea tea = TEA_SERVICE.getAll().get(0);
+        Tea tea = TEA_SERVICE.findAll().get(0);
         System.out.println("Changing title of tea with index 0 to 'Cool Tea' ");
         System.out.println("Before: " + tea);
         tea.setTitle("Cool Tea");
@@ -54,10 +54,10 @@ public class Main {
         System.out.println("-----------------------------------");
 
         //PEN
-        PEN_SERVICE.createAndSavePens(5);
+        PEN_SERVICE.createAndSaveProducts(5);
         System.out.println("Pens created:");
         PEN_SERVICE.printAll();
-        Pen pen = PEN_SERVICE.getAll().get(4);
+        Pen pen = PEN_SERVICE.findAll().get(4);
         System.out.println("Changing count of pen with index 4 to 25 ");
         System.out.println("Before: " + pen);
         pen.setCount(25);

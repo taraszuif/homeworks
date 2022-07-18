@@ -71,7 +71,7 @@ public class PhoneRepository implements CrudPhoneRepository {
     }
 
     @Override
-    public List<Phone> getAll() {
+    public List<Phone> findAll() {
         if (phones.isEmpty()) {
             return Collections.emptyList();
         }

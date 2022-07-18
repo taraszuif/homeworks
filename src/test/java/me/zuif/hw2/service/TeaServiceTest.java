@@ -28,47 +28,47 @@ class TeaServiceTest {
 
     @Test
     void createAndSaveTeas_negativeCount() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> target.createAndSaveTeas(-1));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> target.createAndSaveProducts(-1));
     }
 
     @Test
     void createAndSaveTeas_zeroCount() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> target.createAndSaveTeas(0));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> target.createAndSaveProducts(0));
     }
 
     @Test
     void createAndSaveTeas() {
-        target.createAndSaveTeas(2);
+        target.createAndSaveProducts(2);
         Mockito.verify(repository).saveAll(Mockito.anyList());
     }
 
     @Test
     void getAll() {
-        target.getAll();
-        Mockito.verify(repository).getAll();
+        target.findAll();
+        Mockito.verify(repository).findAll();
     }
 
     @Test
     void getAll_Argument_Matcher() {
-        target.getAll();
+        target.findAll();
         TeaService target = mock(TeaService.class);
         Tea tea = new Tea("Title", 500, 1000.0, TeaBrand.LIPTON, TeaType.BLACK);
-        when(target.getAll()).thenReturn(Arrays.asList(tea));
-        Assertions.assertEquals(tea.getId(), target.getAll().stream().findFirst().get().getId());
+        when(target.findAll()).thenReturn(Arrays.asList(tea));
+        Assertions.assertEquals(tea.getId(), target.findAll().stream().findFirst().get().getId());
 
     }
 
     @Test
     void printAll() {
         target.printAll();
-        Mockito.verify(repository).getAll();
+        Mockito.verify(repository).findAll();
     }
 
 
     @Test
     void saveTea() {
         final Tea tea = new Tea("Title", 100, 1000.0, TeaBrand.LIPTON, TeaType.BLACK);
-        target.saveTea(tea);
+        target.save(tea);
 
         ArgumentCaptor<Tea> argument = ArgumentCaptor.forClass(Tea.class);
         Mockito.verify(repository).save(argument.capture());
@@ -78,7 +78,7 @@ class TeaServiceTest {
     @Test
     void saveTea_verifyTimes() {
         final Tea tea = new Tea("Title", 100, 1000.0, TeaBrand.LIPTON, TeaType.BLACK);
-        target.saveTea(tea);
+        target.save(tea);
 
         ArgumentCaptor<Tea> argument = ArgumentCaptor.forClass(Tea.class);
         Mockito.verify(repository, Mockito.times(1)).save(argument.capture());
@@ -88,7 +88,7 @@ class TeaServiceTest {
     @Test
     void saveTea_zeroCount() {
         final Tea tea = new Tea("Title", 0, 1000.0, TeaBrand.LIPTON, TeaType.BLACK);
-        target.saveTea(tea);
+        target.save(tea);
 
         ArgumentCaptor<Tea> argument = ArgumentCaptor.forClass(Tea.class);
         Mockito.verify(repository).save(argument.capture());
