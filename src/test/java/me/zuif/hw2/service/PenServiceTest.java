@@ -5,7 +5,7 @@ import me.zuif.hw2.model.pen.Pen;
 import me.zuif.hw2.model.pen.PenBrand;
 import me.zuif.hw2.model.pen.PenColor;
 import me.zuif.hw2.model.pen.PenType;
-import me.zuif.hw2.repository.pen.PenRepository;
+import me.zuif.hw2.repository.PenRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,35 +31,35 @@ class PenServiceTest {
 
     @Test
     void createAndSavePens_negativeCount() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> target.createAndSavePens(-1));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> target.createAndSaveProducts(-1));
     }
 
     @Test
     void createAndSavePens_zeroCount() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> target.createAndSavePens(0));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> target.createAndSaveProducts(0));
     }
 
     @Test
     void createAndSavePens() {
-        target.createAndSavePens(2);
+        target.createAndSaveProducts(2);
         Mockito.verify(repository).saveAll(Mockito.anyList());
     }
 
     @Test
     void getAll() {
-        target.getAll();
-        Mockito.verify(repository).getAll();
+        target.findAll();
+        Mockito.verify(repository).findAll();
     }
 
     @Test
     void getAll_Argument_Matcher() {
-        target.getAll();
+        target.findAll();
         PenService target = mock(PenService.class);
         Pen pen = new Pen("Title", 500, 1000.0, PenBrand.PARKER,
                 PenType.BALLPOINT,
                 PenColor.DARK_BLUE);
-        when(target.getAll()).thenReturn(Arrays.asList(pen));
-        Assertions.assertEquals(pen.getId(), target.getAll().stream().findFirst().get().getId());
+        when(target.findAll()).thenReturn(Arrays.asList(pen));
+        Assertions.assertEquals(pen.getId(), target.findAll().stream().findFirst().get().getId());
 
     }
 
@@ -72,7 +72,7 @@ class PenServiceTest {
         Pen noParkerPen = new Pen("Title", 500, 1000.0, PenBrand.PILOT,
                 PenType.BALLPOINT,
                 PenColor.DARK_BLUE);
-        when(repository.getAll()).thenReturn(List.of(parkerPen, noParkerPen));
+        when(repository.findAll()).thenReturn(List.of(parkerPen, noParkerPen));
         Assertions.assertTrue(target.getAllByBrand(PenBrand.PARKER).
                 stream().filter(pen -> pen.getBrand() != PenBrand.PARKER).collect(Collectors.toList()).size() == 0);
     }
@@ -85,7 +85,7 @@ class PenServiceTest {
         Pen noParkerPen = new Pen("Title", 500, 1000.0, PenBrand.PILOT,
                 PenType.BALLPOINT,
                 PenColor.DARK_BLUE);
-        when(repository.getAll()).thenReturn(List.of(parkerPen, noParkerPen));
+        when(repository.findAll()).thenReturn(List.of(parkerPen, noParkerPen));
         Assertions.assertFalse(target.getAllByBrand(PenBrand.PARKER).size() == 0);
     }
 
@@ -149,7 +149,7 @@ class PenServiceTest {
                 PenType.BALLPOINT,
                 PenColor.DARK_BLUE);
         when(repository.findById(Mockito.anyString())).thenReturn(Optional.empty());
-        when(repository.getAll()).thenReturn(List.of(otherPen, pen));
+        when(repository.findAll()).thenReturn(List.of(otherPen, pen));
         Assertions.assertEquals(target.findByIdOrGetFirst("1"), Optional.of(otherPen));
     }
 
@@ -173,7 +173,7 @@ class PenServiceTest {
                 PenType.BALLPOINT,
                 PenColor.DARK_BLUE);
         when(repository.findById(Mockito.anyString())).thenReturn(Optional.empty());
-        when(repository.getAll()).thenReturn(List.of(otherPen, pen));
+        when(repository.findAll()).thenReturn(List.of(otherPen, pen));
         Assertions.assertTrue(target.findByIdOrGetAny("1") != null);
 
     }
@@ -196,7 +196,7 @@ class PenServiceTest {
                 PenType.BALLPOINT,
                 PenColor.DARK_BLUE);
         when(repository.findById(Mockito.anyString())).thenReturn(Optional.empty());
-        when(repository.getAll()).thenReturn(List.of(otherPen, pen));
+        when(repository.findAll()).thenReturn(List.of(otherPen, pen));
         Assertions.assertThrows(IllegalArgumentException.class, () -> target.findByIdOrThrow("1"));
 
     }
@@ -247,7 +247,7 @@ class PenServiceTest {
     @Test
     void printAll() {
         target.printAll();
-        Mockito.verify(repository).getAll();
+        Mockito.verify(repository).findAll();
     }
 
 
@@ -256,7 +256,7 @@ class PenServiceTest {
         final Pen pen = new Pen("Title", 100, 1000.0, PenBrand.PARKER,
                 PenType.BALLPOINT,
                 PenColor.DARK_BLUE);
-        target.savePen(pen);
+        target.save(pen);
 
         ArgumentCaptor<Pen> argument = ArgumentCaptor.forClass(Pen.class);
         Mockito.verify(repository).save(argument.capture());
@@ -268,7 +268,7 @@ class PenServiceTest {
         final Pen pen = new Pen("Title", 100, 1000.0, PenBrand.PARKER,
                 PenType.BALLPOINT,
                 PenColor.DARK_BLUE);
-        target.savePen(pen);
+        target.save(pen);
 
         ArgumentCaptor<Pen> argument = ArgumentCaptor.forClass(Pen.class);
         Mockito.verify(repository, Mockito.times(1)).save(argument.capture());
@@ -280,7 +280,7 @@ class PenServiceTest {
         final Pen pen = new Pen("Title", 0, 1000.0, PenBrand.PARKER,
                 PenType.BALLPOINT,
                 PenColor.DARK_BLUE);
-        target.savePen(pen);
+        target.save(pen);
 
         ArgumentCaptor<Pen> argument = ArgumentCaptor.forClass(Pen.class);
         Mockito.verify(repository).save(argument.capture());

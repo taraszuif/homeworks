@@ -4,7 +4,6 @@ package me.zuif.hw2.repository;
 import me.zuif.hw2.model.tea.Tea;
 import me.zuif.hw2.model.tea.TeaBrand;
 import me.zuif.hw2.model.tea.TeaType;
-import me.zuif.hw2.repository.tea.TeaRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,7 +35,7 @@ class TeaRepositoryTest {
     @Test
     void save() {
         target.save(tea);
-        final List<Tea> teas = target.getAll();
+        final List<Tea> teas = target.findAll();
         Assertions.assertEquals(1, teas.size());
         Assertions.assertEquals(teas.get(0).getId(), tea.getId());
     }
@@ -44,14 +43,14 @@ class TeaRepositoryTest {
     @Test
     void save_putNull() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> target.save(null));
-        final List<Tea> actualResult = target.getAll();
+        final List<Tea> actualResult = target.findAll();
         Assertions.assertEquals(0, actualResult.size());
     }
 
     @Test
     void saveAll_singleTea() {
         target.saveAll(Collections.singletonList(tea));
-        final List<Tea> teas = target.getAll();
+        final List<Tea> teas = target.findAll();
         Assertions.assertEquals(1, teas.size());
         Assertions.assertEquals(teas.get(0).getId(), tea.getId());
     }
@@ -60,7 +59,7 @@ class TeaRepositoryTest {
     @Test
     void saveAll_noTea() {
         target.saveAll(Collections.emptyList());
-        final List<Tea> teas = target.getAll();
+        final List<Tea> teas = target.findAll();
         Assertions.assertEquals(0, teas.size());
     }
 
@@ -68,7 +67,7 @@ class TeaRepositoryTest {
     void saveAll_manyTeas() {
         final Tea otherTea = new Tea("Title", 500, 1000.0, TeaBrand.LIPTON, TeaType.BLACK);
         target.saveAll(List.of(tea, otherTea));
-        final List<Tea> teas = target.getAll();
+        final List<Tea> teas = target.findAll();
         Assertions.assertEquals(2, teas.size());
         Assertions.assertEquals(teas.get(0).getId(), tea.getId());
         Assertions.assertEquals(teas.get(1).getId(), otherTea.getId());
@@ -88,7 +87,7 @@ class TeaRepositoryTest {
         teas.add(tea);
         teas.add(null);
         Assertions.assertThrows(IllegalArgumentException.class, () -> target.saveAll(teas));
-        final List<Tea> actualResult = target.getAll();
+        final List<Tea> actualResult = target.findAll();
         Assertions.assertEquals(1, actualResult.size());
     }
 
@@ -101,7 +100,7 @@ class TeaRepositoryTest {
         final boolean result = target.update(tea);
 
         Assertions.assertTrue(result);
-        final List<Tea> actualResult = target.getAll();
+        final List<Tea> actualResult = target.findAll();
         Assertions.assertEquals(1, actualResult.size());
         Assertions.assertEquals(newTitle, actualResult.get(0).getTitle());
         Assertions.assertEquals(tea.getId(), actualResult.get(0).getId());
@@ -115,7 +114,7 @@ class TeaRepositoryTest {
         final boolean result = target.update(noTea);
 
         Assertions.assertFalse(result);
-        final List<Tea> actualResult = target.getAll();
+        final List<Tea> actualResult = target.findAll();
         Assertions.assertEquals(1, actualResult.size());
         Assertions.assertEquals(tea.getId(), actualResult.get(0).getId());
         Assertions.assertEquals(tea.getCount(), actualResult.get(0).getCount());
@@ -141,7 +140,7 @@ class TeaRepositoryTest {
         target.save(tea);
         final boolean result = target.delete(tea.getId());
         Assertions.assertTrue(result);
-        final List<Tea> actualResult = target.getAll();
+        final List<Tea> actualResult = target.findAll();
         Assertions.assertEquals(0, actualResult.size());
     }
 
@@ -151,20 +150,20 @@ class TeaRepositoryTest {
         final Tea noTea = new Tea("Title", 500, 1000.0, TeaBrand.LIPTON, TeaType.BLACK);
         final boolean result = target.delete(noTea.getId());
         Assertions.assertFalse(result);
-        final List<Tea> actualResult = target.getAll();
+        final List<Tea> actualResult = target.findAll();
         Assertions.assertEquals(1, actualResult.size());
     }
 
     @Test
     void getAll() {
         target.save(tea);
-        final List<Tea> actualResult = target.getAll();
+        final List<Tea> actualResult = target.findAll();
         Assertions.assertEquals(1, actualResult.size());
     }
 
     @Test
     void getAll_noTeas() {
-        final List<Tea> actualResult = target.getAll();
+        final List<Tea> actualResult = target.findAll();
         Assertions.assertEquals(0, actualResult.size());
     }
 

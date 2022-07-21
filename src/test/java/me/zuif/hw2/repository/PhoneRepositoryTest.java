@@ -2,7 +2,6 @@ package me.zuif.hw2.repository;
 
 import me.zuif.hw2.model.phone.Manufacturer;
 import me.zuif.hw2.model.phone.Phone;
-import me.zuif.hw2.repository.phone.PhoneRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,7 +34,7 @@ class PhoneRepositoryTest {
     @Test
     void save() {
         target.save(phone);
-        final List<Phone> phones = target.getAll();
+        final List<Phone> phones = target.findAll();
         Assertions.assertEquals(1, phones.size());
         Assertions.assertEquals(phones.get(0).getId(), phone.getId());
     }
@@ -43,14 +42,14 @@ class PhoneRepositoryTest {
     @Test
     void save_putNull() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> target.save(null));
-        final List<Phone> actualResult = target.getAll();
+        final List<Phone> actualResult = target.findAll();
         Assertions.assertEquals(0, actualResult.size());
     }
 
     @Test
     void saveAll_singlePhone() {
         target.saveAll(Collections.singletonList(phone));
-        final List<Phone> phones = target.getAll();
+        final List<Phone> phones = target.findAll();
         Assertions.assertEquals(1, phones.size());
         Assertions.assertEquals(phones.get(0).getId(), phone.getId());
     }
@@ -59,7 +58,7 @@ class PhoneRepositoryTest {
     @Test
     void saveAll_noPhone() {
         target.saveAll(Collections.emptyList());
-        final List<Phone> phones = target.getAll();
+        final List<Phone> phones = target.findAll();
         Assertions.assertEquals(0, phones.size());
     }
 
@@ -67,7 +66,7 @@ class PhoneRepositoryTest {
     void saveAll_manyPhones() {
         final Phone otherPhone = new Phone("Title", 500, 1000.0, "Model", Manufacturer.APPLE);
         target.saveAll(List.of(phone, otherPhone));
-        final List<Phone> phones = target.getAll();
+        final List<Phone> phones = target.findAll();
         Assertions.assertEquals(2, phones.size());
         Assertions.assertEquals(phones.get(0).getId(), phone.getId());
         Assertions.assertEquals(phones.get(1).getId(), otherPhone.getId());
@@ -87,7 +86,7 @@ class PhoneRepositoryTest {
         phones.add(phone);
         phones.add(null);
         Assertions.assertThrows(IllegalArgumentException.class, () -> target.saveAll(phones));
-        final List<Phone> actualResult = target.getAll();
+        final List<Phone> actualResult = target.findAll();
         Assertions.assertEquals(1, actualResult.size());
     }
 
@@ -100,7 +99,7 @@ class PhoneRepositoryTest {
         final boolean result = target.update(phone);
 
         Assertions.assertTrue(result);
-        final List<Phone> actualResult = target.getAll();
+        final List<Phone> actualResult = target.findAll();
         Assertions.assertEquals(1, actualResult.size());
         Assertions.assertEquals(newTitle, actualResult.get(0).getTitle());
         Assertions.assertEquals(phone.getId(), actualResult.get(0).getId());
@@ -114,7 +113,7 @@ class PhoneRepositoryTest {
         final boolean result = target.update(noPhone);
 
         Assertions.assertFalse(result);
-        final List<Phone> actualResult = target.getAll();
+        final List<Phone> actualResult = target.findAll();
         Assertions.assertEquals(1, actualResult.size());
         Assertions.assertEquals(phone.getId(), actualResult.get(0).getId());
         Assertions.assertEquals(phone.getCount(), actualResult.get(0).getCount());
@@ -140,7 +139,7 @@ class PhoneRepositoryTest {
         target.save(phone);
         final boolean result = target.delete(phone.getId());
         Assertions.assertTrue(result);
-        final List<Phone> actualResult = target.getAll();
+        final List<Phone> actualResult = target.findAll();
         Assertions.assertEquals(0, actualResult.size());
     }
 
@@ -150,20 +149,20 @@ class PhoneRepositoryTest {
         final Phone noPhone = new Phone("Title", 500, 1000.0, "Model", Manufacturer.APPLE);
         final boolean result = target.delete(noPhone.getId());
         Assertions.assertFalse(result);
-        final List<Phone> actualResult = target.getAll();
+        final List<Phone> actualResult = target.findAll();
         Assertions.assertEquals(1, actualResult.size());
     }
 
     @Test
     void getAll() {
         target.save(phone);
-        final List<Phone> actualResult = target.getAll();
+        final List<Phone> actualResult = target.findAll();
         Assertions.assertEquals(1, actualResult.size());
     }
 
     @Test
     void getAll_noPhones() {
-        final List<Phone> actualResult = target.getAll();
+        final List<Phone> actualResult = target.findAll();
         Assertions.assertEquals(0, actualResult.size());
     }
 

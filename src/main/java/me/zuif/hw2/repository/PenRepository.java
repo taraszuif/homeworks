@@ -1,4 +1,4 @@
-package me.zuif.hw2.repository.pen;
+package me.zuif.hw2.repository;
 
 
 import me.zuif.hw2.model.pen.Pen;
@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
-public class PenRepository implements CrudPenRepository {
+public class PenRepository implements ProductRepository<Pen> {
     private final List<Pen> pens;
     private final Logger logger = LoggerFactory.getLogger(PenRepository.class);
 
@@ -71,7 +71,7 @@ public class PenRepository implements CrudPenRepository {
     }
 
     @Override
-    public List<Pen> getAll() {
+    public List<Pen> findAll() {
         if (pens.isEmpty()) {
             return Collections.emptyList();
         }

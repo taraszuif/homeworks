@@ -1,4 +1,4 @@
-package me.zuif.hw2.repository.tea;
+package me.zuif.hw2.repository;
 
 
 import me.zuif.hw2.model.tea.Tea;
@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 
 
-public class TeaRepository implements CrudTeaRepository {
+public class TeaRepository implements ProductRepository<Tea> {
     private final Logger logger = LoggerFactory.getLogger(TeaRepository.class);
     private final List<Tea> teas;
 
@@ -73,7 +73,7 @@ public class TeaRepository implements CrudTeaRepository {
     }
 
     @Override
-    public List<Tea> getAll() {
+    public List<Tea> findAll() {
         if (teas.isEmpty()) {
             return Collections.emptyList();
         }
