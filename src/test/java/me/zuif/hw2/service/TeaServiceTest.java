@@ -4,7 +4,7 @@ package me.zuif.hw2.service;
 import me.zuif.hw2.model.tea.Tea;
 import me.zuif.hw2.model.tea.TeaBrand;
 import me.zuif.hw2.model.tea.TeaType;
-import me.zuif.hw2.repository.tea.TeaRepository;
+import me.zuif.hw2.repository.TeaRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

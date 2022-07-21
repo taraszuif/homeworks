@@ -1,4 +1,4 @@
-package me.zuif.hw2.repository.phone;
+package me.zuif.hw2.repository;
 
 
 import me.zuif.hw2.model.phone.Phone;
@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
-public class PhoneRepository implements CrudPhoneRepository {
+public class PhoneRepository implements ProductRepository<Phone> {
     private final List<Phone> phones;
     private final Logger logger = LoggerFactory.getLogger(PhoneRepository.class);
 

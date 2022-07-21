@@ -3,7 +3,7 @@ package me.zuif.hw2.service;
 
 import me.zuif.hw2.model.phone.Manufacturer;
 import me.zuif.hw2.model.phone.Phone;
-import me.zuif.hw2.repository.phone.PhoneRepository;
+import me.zuif.hw2.repository.PhoneRepository;
 
 import java.util.Random;
 

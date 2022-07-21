@@ -5,7 +5,6 @@ import me.zuif.hw2.model.pen.Pen;
 import me.zuif.hw2.model.pen.PenBrand;
 import me.zuif.hw2.model.pen.PenColor;
 import me.zuif.hw2.model.pen.PenType;
-import me.zuif.hw2.repository.pen.PenRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
