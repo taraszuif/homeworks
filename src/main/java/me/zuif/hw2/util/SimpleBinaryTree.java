@@ -18,8 +18,8 @@ public class SimpleBinaryTree<E extends Product> {
             phoneTree.add(phone);
         }
 
-        //Если выводить объект полностью то в консоли дерево плывёт, поэтому сделал вывод по округлённой цене, количеству
-        // или имени
+        //If you display the object using toString(), then the tree looks bad in the console,
+        // so I made a print with mode of price, count, title or type
         System.out.println("------------------------------------Title mode-------------------------\n");
         phoneTree.printTree("TITLE");
         System.out.println("------------------------------------Count mode-------------------------\n");
