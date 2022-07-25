@@ -14,11 +14,19 @@ import java.util.Random;
 
 public class PenService extends ProductService<Pen> {
     private static final Random RANDOM = new Random();
+    private static PenService instance;
 
-    public PenService(PenRepository repository) {
+
+    private PenService(PenRepository repository) {
         super(repository);
     }
 
+    public static PenService getInstance() {
+        if (instance == null) {
+            instance = new PenService(PenRepository.getInstance());
+        }
+        return instance;
+    }
 
     private PenBrand getRandomPenBrand() {
         final PenBrand[] values = PenBrand.values();

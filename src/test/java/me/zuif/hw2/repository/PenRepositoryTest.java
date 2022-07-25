@@ -24,7 +24,7 @@ class PenRepositoryTest {
     @BeforeEach
     void setUp() {
         final Random random = new Random();
-        target = new PenRepository();
+        target = PenRepository.getInstance();
         pen = new Pen(
                 "Title-" + random.nextInt(1000),
                 random.nextInt(500),

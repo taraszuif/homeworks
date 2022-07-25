@@ -23,7 +23,7 @@ class TeaServiceTest {
     @BeforeEach
     void setUp() {
         repository = Mockito.mock(TeaRepository.class);
-        target = new TeaService(repository);
+        target = TeaService.getInstance();
     }
 
     @Test

@@ -26,7 +26,7 @@ class PenServiceTest {
     @BeforeEach
     void setUp() {
         repository = Mockito.mock(PenRepository.class);
-        target = new PenService(repository);
+        target = PenService.getInstance();
     }
 
     @Test

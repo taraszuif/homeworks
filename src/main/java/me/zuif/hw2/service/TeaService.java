@@ -10,11 +10,19 @@ import java.util.Random;
 
 public class TeaService extends ProductService<Tea> {
     private static final Random RANDOM = new Random();
+    private static TeaService instance;
 
-    public TeaService(TeaRepository repository) {
+
+    private TeaService(TeaRepository repository) {
         super(repository);
     }
 
+    public static TeaService getInstance() {
+        if (instance == null) {
+            instance = new TeaService(TeaRepository.getInstance());
+        }
+        return instance;
+    }
 
     @Override
     protected Tea createProduct() {

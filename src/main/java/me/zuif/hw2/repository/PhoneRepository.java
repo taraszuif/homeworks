@@ -8,11 +8,19 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 
 public class PhoneRepository implements ProductRepository<Phone> {
+    private static PhoneRepository instance;
     private final List<Phone> phones;
     private final Logger logger = LoggerFactory.getLogger(PhoneRepository.class);
 
-    public PhoneRepository() {
+    private PhoneRepository() {
         phones = new LinkedList<>();
+    }
+
+    public static PhoneRepository getInstance() {
+        if (instance == null) {
+            instance = new PhoneRepository();
+        }
+        return instance;
     }
 
     @Override

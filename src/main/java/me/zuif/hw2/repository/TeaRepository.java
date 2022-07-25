@@ -9,11 +9,19 @@ import java.util.*;
 
 
 public class TeaRepository implements ProductRepository<Tea> {
+    private static TeaRepository instance;
     private final Logger logger = LoggerFactory.getLogger(TeaRepository.class);
     private final List<Tea> teas;
 
-    public TeaRepository() {
+    private TeaRepository() {
         teas = new LinkedList<>();
+    }
+
+    public static TeaRepository getInstance() {
+        if (instance == null) {
+            instance = new TeaRepository();
+        }
+        return instance;
     }
 
     @Override
