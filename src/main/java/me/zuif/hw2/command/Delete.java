@@ -20,7 +20,7 @@ public class Delete implements ICommand {
     public void execute() {
         System.out.println("What do you want to delete");
         ProductType[] types = ProductType.values();
-        final List<String> names = Utils.getNamesOfType(types);
+        final List<String> names = Utils.getNamesOfEnum(types);
         int productTypeIndex = UserInputUtil.getUserInput(types.length, names);
         switch (types[productTypeIndex]) {
             case PHONE -> delete(PHONE_SERVICE);

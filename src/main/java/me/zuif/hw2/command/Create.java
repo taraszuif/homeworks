@@ -12,7 +12,7 @@ public class Create implements ICommand {
     public void execute() {
         System.out.println("What do you want to create:");
         final ProductType[] values = ProductType.values();
-        final List<String> names = Utils.getNamesOfType(values);
+        final List<String> names = Utils.getNamesOfEnum(values);
         final int userInput = UserInputUtil.getUserInput(values.length, names);
         ProductFactory.createAndSave(values[userInput]);
     }

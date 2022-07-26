@@ -1,13 +1,14 @@
 package me.zuif.hw2;
 
 
-import me.zuif.hw2.command.Commands;
-import me.zuif.hw2.command.ICommand;
+import me.zuif.hw2.command.*;
 import me.zuif.hw2.service.PenService;
 import me.zuif.hw2.service.PhoneService;
 import me.zuif.hw2.service.TeaService;
+import me.zuif.hw2.util.UserInputUtil;
+import me.zuif.hw2.util.Utils;
 
-import static me.zuif.hw2.command.ICommand.SCANNER;
+import java.util.List;
 
 public class Main {
     private static final PhoneService PHONE_SERVICE = PhoneService.getInstance();
@@ -16,30 +17,21 @@ public class Main {
 
     public static void main(String[] args) {
         final Commands[] values = Commands.values();
-        boolean exit;
+        final List<String> names = Utils.getNamesOfEnum(values);
+        boolean exit = false;
         do {
-            exit = userAction(values);
+            int commandIndex = UserInputUtil.getUserInput(values.length, names);
+            switch (values[commandIndex]) {
+                case DELETE -> new Delete().execute();
+                case PRINT -> new Print().execute();
+                case CREATE -> new Create().execute();
+                case UPDATE -> new Update().execute();
+                case EXIT -> exit = true;
+            }
+
         } while (!exit);
 
     }
 
-    private static boolean userAction(final Commands[] values) {
-        int userCommand = -1;
-        do {
-            for (int i = 0; i < values.length; i++) {
-                System.out.printf("%d) %s%n", i, values[i].getName());
-            }
-            int input = SCANNER.nextInt();
-            if (input >= 0 && input < values.length) {
-                userCommand = input;
-            }
-        } while (userCommand == -1);
-        final ICommand command = values[userCommand].getCommand();
-        if (command == null) {
-            return true;
-        } else {
-            command.execute();
-            return false;
-        }
-    }
 }
+

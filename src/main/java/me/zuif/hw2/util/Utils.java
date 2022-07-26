@@ -1,7 +1,5 @@
 package me.zuif.hw2.util;
 
-import me.zuif.hw2.model.ProductType;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,9 +16,9 @@ public class Utils {
         return true;
     }
 
-    public static List<String> getNamesOfType(final ProductType[] values) {
+    public static List<String> getNamesOfEnum(final Enum[] values) {
         final List<String> names = new ArrayList<>(values.length);
-        for (ProductType type : values) {
+        for (Enum type : values) {
             names.add(type.name());
         }
         return names;
