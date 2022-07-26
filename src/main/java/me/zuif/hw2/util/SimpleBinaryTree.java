@@ -19,7 +19,7 @@ public class SimpleBinaryTree<E extends Product> {
         }
 
         //If you display the object using toString(), then the tree looks bad in the console,
-        // so I made a print with mode of price, count, title or type
+        // ¸so I made a print with mode of price, count, title or type
         System.out.println("------------------------------------Title mode-------------------------\n");
         phoneTree.printTree("TITLE");
         System.out.println("------------------------------------Count mode-------------------------\n");
@@ -52,7 +52,7 @@ public class SimpleBinaryTree<E extends Product> {
     }
 
     public void printTree(String mode) {
-        Stack globalStack = new Stack();
+        Stack<Node<E>> globalStack = new Stack<Node<E>>();
 
 
         globalStack.push(root);
@@ -60,13 +60,12 @@ public class SimpleBinaryTree<E extends Product> {
         boolean isRowEmpty = false;
 
         while (isRowEmpty == false) {
-            Stack localStack = new Stack();
+            Stack<Node<E>> localStack = new Stack<Node<E>>();
             isRowEmpty = true;
-
             for (int j = 0; j < gaps; j++)
                 System.out.print(' ');
             while (globalStack.isEmpty() == false) {
-                Node temp = (Node) globalStack.pop();
+                Node temp = globalStack.pop();
                 if (temp != null) {
                     switch (mode) {
                         case "PRICE" -> System.out.print(Math.ceil(temp.product.getPrice()));
