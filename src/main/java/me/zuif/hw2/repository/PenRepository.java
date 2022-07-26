@@ -8,11 +8,20 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 
 public class PenRepository implements ProductRepository<Pen> {
+    private static PenRepository instance;
+
     private final List<Pen> pens;
     private final Logger logger = LoggerFactory.getLogger(PenRepository.class);
 
-    public PenRepository() {
+    private PenRepository() {
         pens = new LinkedList<>();
+    }
+
+    public static PenRepository getInstance() {
+        if (instance == null) {
+            instance = new PenRepository();
+        }
+        return instance;
     }
 
     @Override

@@ -21,7 +21,7 @@ class PhoneRepositoryTest {
     @BeforeEach
     void setUp() {
         final Random random = new Random();
-        target = new PhoneRepository();
+        target = PhoneRepository.getInstance();
         phone = new Phone(
                 "Title-" + random.nextInt(1000),
                 random.nextInt(500),

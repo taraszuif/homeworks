@@ -9,18 +9,24 @@ import java.util.Random;
 
 public class PhoneService extends ProductService<Phone> {
     private static final Random RANDOM = new Random();
+    private static PhoneService instance;
 
-    public PhoneService(PhoneRepository repository) {
+    private PhoneService(PhoneRepository repository) {
         super(repository);
     }
 
+    public static PhoneService getInstance() {
+        if (instance == null) {
+            instance = new PhoneService(PhoneRepository.getInstance());
+        }
+        return instance;
+    }
 
     private Manufacturer getRandomManufacturer() {
         final Manufacturer[] values = Manufacturer.values();
         final int index = RANDOM.nextInt(values.length);
         return values[index];
     }
-
 
     @Override
     protected Phone createProduct() {

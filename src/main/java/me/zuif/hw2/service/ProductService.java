@@ -42,8 +42,12 @@ public abstract class ProductService<T extends Product> {
         return repository;
     }
 
-    public void update(T product) {
-        repository.update(product);
+    public void update(Product product) {
+        repository.update((T) product);
+    }
+
+    public T findById(String id) {
+        return repository.findById(id).orElseThrow(IllegalArgumentException::new);
     }
 
     public List<T> findAll() {

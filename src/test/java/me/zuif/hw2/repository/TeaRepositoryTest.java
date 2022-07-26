@@ -23,7 +23,7 @@ class TeaRepositoryTest {
     @BeforeEach
     void setUp() {
         final Random random = new Random();
-        target = new TeaRepository();
+        target = TeaRepository.getInstance();
         tea = new Tea(
                 "Title-" + random.nextInt(1000),
                 random.nextInt(500),

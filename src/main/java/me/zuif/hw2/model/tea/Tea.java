@@ -3,17 +3,18 @@ package me.zuif.hw2.model.tea;
 import lombok.Getter;
 import lombok.Setter;
 import me.zuif.hw2.model.Product;
+import me.zuif.hw2.model.ProductType;
 
 @Getter
 @Setter
 public class Tea extends Product {
     private final TeaBrand brand;
-    private final TeaType type;
+    private final TeaType teaType;
 
-    public Tea(String title, int count, double price, TeaBrand brand, TeaType type) {
-        super(title, count, price);
+    public Tea(String title, int count, double price, TeaBrand brand, TeaType teaType) {
+        super(title, count, price, ProductType.TEA);
         this.brand = brand;
-        this.type = type;
+        this.teaType = teaType;
     }
 
     @Override
