@@ -40,5 +40,9 @@ public class PhoneService extends ProductService<Phone> {
         return phone;
     }
 
+    public boolean checkDetailExists(String detailToCheck) {
+        return findAll().stream().flatMap(phone -> phone.getDetails().stream())
+                .anyMatch(detail -> detail.equals(detailToCheck));
+    }
 
 }
