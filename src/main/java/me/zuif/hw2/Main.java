@@ -2,7 +2,6 @@ package me.zuif.hw2;
 
 
 import me.zuif.hw2.command.*;
-import me.zuif.hw2.model.pen.Pen;
 import me.zuif.hw2.model.phone.Manufacturer;
 import me.zuif.hw2.model.phone.Phone;
 import me.zuif.hw2.service.PenService;
@@ -46,7 +45,7 @@ public class Main {
         PHONE_SERVICE.createAndSaveProducts(10);
         System.out.println("ForEach: ");
         PHONE_SERVICE.printAll();
-        ProductService.StreamHomework homework = PHONE_SERVICE.new StreamHomework<Pen>();
+        ProductService.StreamHomework homework = PHONE_SERVICE.new StreamHomework<Phone>();
 
         //Посчитать сумму товаров через reduce
         System.out.println("product sum count: " + homework.sumProduct());
