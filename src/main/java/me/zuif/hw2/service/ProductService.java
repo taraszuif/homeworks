@@ -78,11 +78,8 @@ public abstract class ProductService<T extends Product> {
 
     public class StreamHomework<T extends Product> {
         //как я понял у продукта нет цены если его цена == 0
-        public Predicate<Collection<T>> hasPrice = (product) -> {
-            Collection<T> withoutFilter = product.stream().collect(Collectors.toCollection(() -> new LinkedList<>()));
-            return (product.stream().filter(p -> p.getPrice() != 0).
-                    collect(Collectors.toCollection(() -> new LinkedList<>())).size() == withoutFilter.size());
-        };
+        public Predicate<Collection<T>> hasPrice = (products) ->
+                products.stream().noneMatch(product -> product.getPrice() == 0);
 
         public int sumProduct() {
             return repository.findAll().stream().map(Product::getCount).reduce(0, Integer::sum);
