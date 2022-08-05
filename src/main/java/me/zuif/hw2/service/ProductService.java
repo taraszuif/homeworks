@@ -111,7 +111,7 @@ public abstract class ProductService<T extends Product> {
                     case PHONE -> new Phone(map.getOrDefault("title", "N/A").toString(),
                             (Integer) map.getOrDefault("count", 0),
                             (Double) map.getOrDefault("price", 0D),
-                            map.getOrDefault("example", "N/A").toString(),
+                            map.getOrDefault("model", "N/A").toString(),
                             Manufacturer.valueOf(map.getOrDefault("manufacturer", Manufacturer.UNKNOWN).toString()));
 
                     case TEA -> new Tea(map.getOrDefault("title", "N/A").toString(),
