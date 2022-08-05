@@ -50,7 +50,7 @@ public class PhoneService extends ProductService<Phone> {
             return new Phone(map.getOrDefault("title", "N/A"),
                     Integer.parseInt(map.getOrDefault("count", String.valueOf(0))),
                     Double.parseDouble(map.getOrDefault("price", String.valueOf(0))),
-                    map.getOrDefault("model", "N/A"),
+                    map.getOrDefault("example", "N/A"),
                     Manufacturer.valueOf(map.getOrDefault("manufacturer", Manufacturer.UNKNOWN.name())),
                     LocalDateTime.parse(map.get("created"), DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")),
                     map.get("currency"),
