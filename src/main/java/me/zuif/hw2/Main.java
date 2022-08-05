@@ -2,19 +2,16 @@ package me.zuif.hw2;
 
 
 import me.zuif.hw2.command.*;
-import me.zuif.hw2.model.phone.Manufacturer;
-import me.zuif.hw2.model.phone.Phone;
 import me.zuif.hw2.service.PenService;
 import me.zuif.hw2.service.PhoneService;
-import me.zuif.hw2.service.ProductService;
 import me.zuif.hw2.service.TeaService;
 import me.zuif.hw2.util.UserInputUtil;
 import me.zuif.hw2.util.Utils;
+import me.zuif.hw2.util.parser.JsonParser;
+import me.zuif.hw2.util.parser.XmlParser;
 
-import java.util.Arrays;
-import java.util.HashMap;
+import java.io.InputStream;
 import java.util.List;
-import java.util.Map;
 
 public class Main {
     private static final PhoneService PHONE_SERVICE = PhoneService.getInstance();
@@ -22,7 +19,28 @@ public class Main {
     private static final PenService PEN_SERVICE = PenService.getInstance();
 
     public static void main(String[] args) {
-        streamTest();
+
+        parserTest();
+        /*streamTest();*/
+        /*commandsTest();*/
+    }
+
+
+    private static void parserTest() {
+
+        ClassLoader loader = Thread.currentThread().getContextClassLoader();
+        InputStream inputStreamJSON = loader.getResourceAsStream("phone.json");
+        InputStream inputStreamXML = loader.getResourceAsStream("phone.xml");
+        System.out.println("JSON: " + PHONE_SERVICE.phoneFromMap
+                (JsonParser.jsonLinesToMap(
+                        JsonParser.jsonToLines(inputStreamJSON))));
+        System.out.println();
+        System.out.println("XML: " + PHONE_SERVICE.phoneFromMap(
+                XmlParser.xmlLinesToMap(
+                        XmlParser.xmlToLines(inputStreamXML))));
+    }
+
+    private static void commandsTest() {
         final Commands[] values = Commands.values();
         final List<String> names = Utils.getNamesOfEnum(values);
 
@@ -41,7 +59,7 @@ public class Main {
 
     }
 
-    private static void streamTest() {
+  /*  private static void streamTest() {
         PHONE_SERVICE.createAndSaveProducts(10);
         System.out.println("ForEach: ");
         PHONE_SERVICE.printAll();
@@ -90,6 +108,6 @@ public class Main {
         homework.printGreaterThanReferPrice(500);
 
     }
-
+*/
 }
 
