@@ -11,7 +11,7 @@ public class ProductRepository implements IProductRepository {
     private static ProductRepository instance;
     private final Map<Long, Product> storage;
 
-    public ProductRepository() {
+    private ProductRepository() {
         storage = new HashMap<>();
     }
 

@@ -7,7 +7,7 @@ import com.example.repository.ProductRepository;
 public class NotificationService extends AbstractProductService {
     private static NotificationService instance;
 
-    public NotificationService(IProductRepository repository) {
+    private NotificationService(IProductRepository repository) {
         super(repository);
     }
 

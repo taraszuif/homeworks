@@ -6,7 +6,7 @@ import com.example.repository.ProductRepository;
 public class ProductService extends AbstractProductService {
     private static ProductService instance;
 
-    public ProductService(IProductRepository repository) {
+    private ProductService(IProductRepository repository) {
         super(repository);
     }
 
