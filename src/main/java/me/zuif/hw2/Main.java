@@ -2,29 +2,40 @@ package me.zuif.hw2;
 
 
 import me.zuif.hw2.command.*;
-import me.zuif.hw2.service.PenService;
+import me.zuif.hw2.model.phone.Manufacturer;
+import me.zuif.hw2.model.phone.Phone;
 import me.zuif.hw2.service.PhoneService;
-import me.zuif.hw2.service.TeaService;
+import me.zuif.hw2.service.ProductService;
 import me.zuif.hw2.util.UserInputUtil;
 import me.zuif.hw2.util.Utils;
 import me.zuif.hw2.util.parser.JsonParser;
 import me.zuif.hw2.util.parser.XmlParser;
 
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Main {
     private static final PhoneService PHONE_SERVICE = PhoneService.getInstance();
-    private static final TeaService TEA_SERVICE = TeaService.getInstance();
-    private static final PenService PEN_SERVICE = PenService.getInstance();
 
     public static void main(String[] args) {
-
-        parserTest();
+        builderTest();
+        /* parserTest();*/
         /*streamTest();*/
         /*commandsTest();*/
     }
 
+
+    private static void builderTest() {
+        Phone.Builder builder = new Phone.Builder(10, Manufacturer.APPLE);
+        builder.withCount(10);
+        builder.withTitle("Typical Title");
+        builder.withModel("Model-1");
+        Phone phone = builder.build();
+        System.out.println(phone);
+    }
 
     private static void parserTest() {
 
@@ -35,6 +46,7 @@ public class Main {
                 (JsonParser.jsonLinesToMap(
                         JsonParser.jsonToLines(inputStreamJSON))));
         System.out.println();
+
         System.out.println("XML: " + PHONE_SERVICE.phoneFromMap(
                 XmlParser.xmlLinesToMap(
                         XmlParser.xmlToLines(inputStreamXML))));
@@ -59,7 +71,7 @@ public class Main {
 
     }
 
-  /*  private static void streamTest() {
+    private static void streamTest() {
         PHONE_SERVICE.createAndSaveProducts(10);
         System.out.println("ForEach: ");
         PHONE_SERVICE.printAll();
@@ -98,7 +110,7 @@ public class Main {
         map.put("count", phone.getCount());
         map.put("price", phone.getPrice());
         map.put("manufacturer", phone.getManufacturer());
-        map.put("model", phone.getModel());
+        map.put("example", phone.getModel());
         //Написать реализацию Function которая принимает Map<String, Object> и создает конкретный продукт на основании полей Map
         System.out.println("map " + map + " to product: " + homework.mapToProduct(map));
         System.out.println();
@@ -108,6 +120,6 @@ public class Main {
         homework.printGreaterThanReferPrice(500);
 
     }
-*/
+
 }
 

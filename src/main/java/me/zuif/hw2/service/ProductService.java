@@ -126,6 +126,7 @@ public abstract class ProductService<T extends Product> {
                             PenBrand.valueOf(map.getOrDefault("brand", PenBrand.UNKNOWN).toString()),
                             PenType.valueOf(map.getOrDefault("type", PenType.UNKNOWN).toString()),
                             PenColor.valueOf(map.getOrDefault("color", PenColor.UNKNOWN).toString()));
+
                 };
 
             };

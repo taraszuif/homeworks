@@ -12,8 +12,8 @@ import java.util.List;
 @Getter
 @Setter
 public class Phone extends Product {
-    private final String model;
     private final Manufacturer manufacturer;
+    private String model;
     private LocalDateTime creatingDate;
     private String currency;
     private OperationSystem operationSystem;
@@ -56,13 +56,55 @@ public class Phone extends Product {
                 ", title='" + title + '\'' +
                 ", count=" + count +
                 ", price=" + price +
-                ", model='" + model + '\'' +
+                ", example='" + model + '\'' +
                 ", manufacturer=" + manufacturer +
                 ", creatingDate=" + creatingDate +
                 ", currency='" + currency + '\'' +
                 ", operationSystem=" + operationSystem +
                 ", details=" + details +
                 '}';
+
     }
 
+    public static class Builder {
+        private final Phone newPhone;
+
+        public Builder(double price, Manufacturer manufacturer) {
+            if (manufacturer == null) {
+                newPhone = new Phone("N/A", 0, price, "N/A", Manufacturer.UNKNOWN);
+            } else {
+                newPhone = new Phone("N/A", 0, price, "N/A", manufacturer);
+            }
+        }
+
+        public Builder withTitle(String title) {
+            if (title.length() > 20) {
+                throw new IllegalArgumentException("Title cannot be longer than 20 characters");
+            }
+            newPhone.setTitle(title);
+            return this;
+        }
+
+        public Builder withCount(int count) {
+            if (count <= 0) {
+                throw new IllegalArgumentException("Count must be greater than 0");
+            }
+            newPhone.setCount(count);
+            return this;
+        }
+
+        public Builder withModel(String model) {
+            if (model.length() > 20) {
+                throw new IllegalArgumentException("Model cannot be longer than 20 characters");
+            }
+            newPhone.setModel(model);
+            return this;
+        }
+
+        public Phone build() {
+            return newPhone;
+        }
+
+
+    }
 }
