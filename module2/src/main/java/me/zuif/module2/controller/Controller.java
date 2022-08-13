@@ -135,7 +135,7 @@ public class Controller implements Runnable {
                 return;
             }
             System.out.println("Invalid input: limit not number. Try again");
-        } while (numeric);
+        } while (true);
 
     }
 }
