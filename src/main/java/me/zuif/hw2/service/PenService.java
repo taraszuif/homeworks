@@ -1,6 +1,8 @@
 package me.zuif.hw2.service;
 
 
+import me.zuif.hw2.annotations.Autowired;
+import me.zuif.hw2.annotations.Singleton;
 import me.zuif.hw2.model.pen.Pen;
 import me.zuif.hw2.model.pen.PenBrand;
 import me.zuif.hw2.model.pen.PenColor;
@@ -12,11 +14,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
+@Singleton
 public class PenService extends ProductService<Pen> {
     private static final Random RANDOM = new Random();
     private static PenService instance;
 
-
+    @Autowired
     private PenService(PenRepository repository) {
         super(repository);
     }

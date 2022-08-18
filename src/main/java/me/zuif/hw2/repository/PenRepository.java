@@ -1,21 +1,26 @@
 package me.zuif.hw2.repository;
 
 
+import me.zuif.hw2.annotations.Autowired;
+import me.zuif.hw2.annotations.Singleton;
 import me.zuif.hw2.model.pen.Pen;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
+@Singleton
 public class PenRepository implements ProductRepository<Pen> {
     private static PenRepository instance;
 
     private final List<Pen> pens;
     private final Logger logger = LoggerFactory.getLogger(PenRepository.class);
 
+    @Autowired
     private PenRepository() {
         pens = new LinkedList<>();
     }
+
 
     public static PenRepository getInstance() {
         if (instance == null) {
