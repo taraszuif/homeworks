@@ -1,17 +1,21 @@
 package me.zuif.hw2.repository;
 
 
+import me.zuif.hw2.annotations.Autowired;
+import me.zuif.hw2.annotations.Singleton;
 import me.zuif.hw2.model.phone.Phone;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
+@Singleton
 public class PhoneRepository implements ProductRepository<Phone> {
     private static PhoneRepository instance;
     private final List<Phone> phones;
     private final Logger logger = LoggerFactory.getLogger(PhoneRepository.class);
 
+    @Autowired
     private PhoneRepository() {
         phones = new LinkedList<>();
     }

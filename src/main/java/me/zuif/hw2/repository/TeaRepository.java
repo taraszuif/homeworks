@@ -1,18 +1,21 @@
 package me.zuif.hw2.repository;
 
 
+import me.zuif.hw2.annotations.Autowired;
+import me.zuif.hw2.annotations.Singleton;
 import me.zuif.hw2.model.tea.Tea;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
-
+@Singleton
 public class TeaRepository implements ProductRepository<Tea> {
     private static TeaRepository instance;
     private final Logger logger = LoggerFactory.getLogger(TeaRepository.class);
     private final List<Tea> teas;
 
+    @Autowired
     private TeaRepository() {
         teas = new LinkedList<>();
     }

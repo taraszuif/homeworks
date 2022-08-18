@@ -1,6 +1,8 @@
 package me.zuif.hw2.service;
 
 
+import me.zuif.hw2.annotations.Autowired;
+import me.zuif.hw2.annotations.Singleton;
 import me.zuif.hw2.model.phone.Manufacturer;
 import me.zuif.hw2.model.phone.OperationSystem;
 import me.zuif.hw2.model.phone.Phone;
@@ -12,10 +14,12 @@ import java.util.Map;
 import java.util.Random;
 import java.util.function.Function;
 
+@Singleton
 public class PhoneService extends ProductService<Phone> {
     private static final Random RANDOM = new Random();
     private static PhoneService instance;
 
+    @Autowired
     private PhoneService(PhoneRepository repository) {
         super(repository);
     }

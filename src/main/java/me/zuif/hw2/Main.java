@@ -2,6 +2,7 @@ package me.zuif.hw2;
 
 
 import me.zuif.hw2.command.*;
+import me.zuif.hw2.context.ApplicationContext;
 import me.zuif.hw2.model.phone.Manufacturer;
 import me.zuif.hw2.model.phone.Phone;
 import me.zuif.hw2.service.PhoneService;
@@ -21,12 +22,21 @@ public class Main {
     private static final PhoneService PHONE_SERVICE = PhoneService.getInstance();
 
     public static void main(String[] args) {
-        builderTest();
+        applicationContextTest();
+        /*  builderTest();*/
         /* parserTest();*/
         /*streamTest();*/
         /*commandsTest();*/
     }
 
+
+    private static void applicationContextTest() {
+        ApplicationContext context = ApplicationContext.getInstance();
+        context.setCache();
+        System.out.println(context.getCache());
+
+
+    }
 
     private static void builderTest() {
         Phone.Builder builder = new Phone.Builder(10, Manufacturer.APPLE);

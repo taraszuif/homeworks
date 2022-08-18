@@ -1,6 +1,8 @@
 package me.zuif.hw2.service;
 
 
+import me.zuif.hw2.annotations.Autowired;
+import me.zuif.hw2.annotations.Singleton;
 import me.zuif.hw2.model.tea.Tea;
 import me.zuif.hw2.model.tea.TeaBrand;
 import me.zuif.hw2.model.tea.TeaType;
@@ -8,11 +10,12 @@ import me.zuif.hw2.repository.TeaRepository;
 
 import java.util.Random;
 
+@Singleton
 public class TeaService extends ProductService<Tea> {
     private static final Random RANDOM = new Random();
     private static TeaService instance;
 
-
+    @Autowired
     private TeaService(TeaRepository repository) {
         super(repository);
     }
