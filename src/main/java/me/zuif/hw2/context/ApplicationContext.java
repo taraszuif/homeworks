@@ -75,7 +75,7 @@ public class ApplicationContext {
                             return;
                         }
                         Object repository = null;
-                        String name = aClass.getSimpleName();
+                        String name = aClass.getClass().getSimpleName();
                         if (name.startsWith("Tea")) {
                             repository = cache.get(TeaRepository.class);
                         } else if (name.startsWith("Pen")) {
