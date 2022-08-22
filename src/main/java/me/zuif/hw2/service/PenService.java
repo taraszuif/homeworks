@@ -7,7 +7,8 @@ import me.zuif.hw2.model.pen.Pen;
 import me.zuif.hw2.model.pen.PenBrand;
 import me.zuif.hw2.model.pen.PenColor;
 import me.zuif.hw2.model.pen.PenType;
-import me.zuif.hw2.repository.PenRepository;
+import me.zuif.hw2.repository.ProductRepository;
+import me.zuif.hw2.repository.postgres.PenRepositoryDB;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,13 +21,13 @@ public class PenService extends ProductService<Pen> {
     private static PenService instance;
 
     @Autowired
-    private PenService(PenRepository repository) {
+    private PenService(ProductRepository repository) {
         super(repository);
     }
 
     public static PenService getInstance() {
         if (instance == null) {
-            instance = new PenService(PenRepository.getInstance());
+            instance = new PenService(PenRepositoryDB.getInstance());
         }
         return instance;
     }

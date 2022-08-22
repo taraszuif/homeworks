@@ -103,10 +103,9 @@ public abstract class ProductService<T extends Product> {
             Function<Map<String, Object>, Product> mapToProduct = (map) -> {
 
                 Object ptype = map.get("producttype");
-                if (!(ptype instanceof ProductType)) {
+                if (!(ptype instanceof ProductType type)) {
                     throw new IllegalArgumentException();
                 }
-                ProductType type = (ProductType) ptype;
                 return switch (type) {
                     case PHONE -> new Phone(map.getOrDefault("title", "N/A").toString(),
                             (Integer) map.getOrDefault("count", 0),

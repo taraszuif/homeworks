@@ -1,9 +1,10 @@
-package me.zuif.hw2.repository;
+package me.zuif.hw2.repository.cache;
 
 
 import me.zuif.hw2.annotations.Autowired;
 import me.zuif.hw2.annotations.Singleton;
 import me.zuif.hw2.model.pen.Pen;
+import me.zuif.hw2.repository.ProductRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

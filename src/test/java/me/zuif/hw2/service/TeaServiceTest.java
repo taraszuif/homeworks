@@ -4,14 +4,14 @@ package me.zuif.hw2.service;
 import me.zuif.hw2.model.tea.Tea;
 import me.zuif.hw2.model.tea.TeaBrand;
 import me.zuif.hw2.model.tea.TeaType;
-import me.zuif.hw2.repository.TeaRepository;
+import me.zuif.hw2.repository.cache.TeaRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
-import java.util.Arrays;
+import java.util.List;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -53,7 +53,7 @@ class TeaServiceTest {
         target.findAll();
         TeaService target = mock(TeaService.class);
         Tea tea = new Tea("Title", 500, 1000.0, TeaBrand.LIPTON, TeaType.BLACK);
-        when(target.findAll()).thenReturn(Arrays.asList(tea));
+        when(target.findAll()).thenReturn(List.of(tea));
         Assertions.assertEquals(tea.getId(), target.findAll().stream().findFirst().get().getId());
 
     }

@@ -2,6 +2,7 @@ package me.zuif.hw2.repository;
 
 import me.zuif.hw2.model.phone.Manufacturer;
 import me.zuif.hw2.model.phone.Phone;
+import me.zuif.hw2.repository.cache.PhoneRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

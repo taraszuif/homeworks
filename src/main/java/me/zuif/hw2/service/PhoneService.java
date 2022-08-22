@@ -6,7 +6,8 @@ import me.zuif.hw2.annotations.Singleton;
 import me.zuif.hw2.model.phone.Manufacturer;
 import me.zuif.hw2.model.phone.OperationSystem;
 import me.zuif.hw2.model.phone.Phone;
-import me.zuif.hw2.repository.PhoneRepository;
+import me.zuif.hw2.repository.ProductRepository;
+import me.zuif.hw2.repository.postgres.PhoneRepositoryDB;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -20,13 +21,13 @@ public class PhoneService extends ProductService<Phone> {
     private static PhoneService instance;
 
     @Autowired
-    private PhoneService(PhoneRepository repository) {
+    private PhoneService(ProductRepository repository) {
         super(repository);
     }
 
     public static PhoneService getInstance() {
         if (instance == null) {
-            instance = new PhoneService(PhoneRepository.getInstance());
+            instance = new PhoneService(PhoneRepositoryDB.getInstance());
         }
         return instance;
     }
@@ -64,9 +65,5 @@ public class PhoneService extends ProductService<Phone> {
         return mapToProduct.apply(productMap);
     }
 
-    public boolean checkDetailExists(String detailToCheck) {
-        return findAll().stream().flatMap(phone -> phone.getDetails().stream())
-                .anyMatch(detail -> detail.equals(detailToCheck));
-    }
 
 }

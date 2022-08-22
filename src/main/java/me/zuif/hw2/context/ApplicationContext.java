@@ -3,9 +3,10 @@ package me.zuif.hw2.context;
 import lombok.Getter;
 import me.zuif.hw2.annotations.Autowired;
 import me.zuif.hw2.annotations.Singleton;
-import me.zuif.hw2.repository.PenRepository;
-import me.zuif.hw2.repository.PhoneRepository;
-import me.zuif.hw2.repository.TeaRepository;
+import me.zuif.hw2.repository.postgres.InvoiceRepositoryDB;
+import me.zuif.hw2.repository.postgres.PenRepositoryDB;
+import me.zuif.hw2.repository.postgres.PhoneRepositoryDB;
+import me.zuif.hw2.repository.postgres.TeaRepositoryDB;
 import org.reflections.Reflections;
 
 import java.lang.reflect.Field;
@@ -77,11 +78,13 @@ public class ApplicationContext {
                         Object repository = null;
                         String name = aClass.getClass().getSimpleName();
                         if (name.startsWith("Tea")) {
-                            repository = cache.get(TeaRepository.class);
+                            repository = cache.get(TeaRepositoryDB.class);
                         } else if (name.startsWith("Pen")) {
-                            repository = cache.get(PenRepository.class);
+                            repository = cache.get(PenRepositoryDB.class);
                         } else if (name.startsWith("Phone")) {
-                            repository = cache.get(PhoneRepository.class);
+                            repository = cache.get(PhoneRepositoryDB.class);
+                        } else if (name.startsWith("Invoice")) {
+                            repository = cache.get(InvoiceRepositoryDB.class);
                         }
                         try {
                             constructor.setAccessible(true);
