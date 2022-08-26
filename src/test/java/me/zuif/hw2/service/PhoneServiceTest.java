@@ -3,14 +3,14 @@ package me.zuif.hw2.service;
 
 import me.zuif.hw2.model.phone.Manufacturer;
 import me.zuif.hw2.model.phone.Phone;
-import me.zuif.hw2.repository.PhoneRepository;
+import me.zuif.hw2.repository.cache.PhoneRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
-import java.util.Arrays;
+import java.util.List;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -52,7 +52,7 @@ class PhoneServiceTest {
         target.findAll();
         PhoneService target = mock(PhoneService.class);
         Phone phone = new Phone("Title", 500, 1000.0, "Model", Manufacturer.APPLE);
-        when(target.findAll()).thenReturn(Arrays.asList(phone));
+        when(target.findAll()).thenReturn(List.of(phone));
         Assertions.assertEquals(phone.getId(), target.findAll().stream().findFirst().get().getId());
 
     }

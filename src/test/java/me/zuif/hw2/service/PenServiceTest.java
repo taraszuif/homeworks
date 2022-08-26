@@ -5,14 +5,13 @@ import me.zuif.hw2.model.pen.Pen;
 import me.zuif.hw2.model.pen.PenBrand;
 import me.zuif.hw2.model.pen.PenColor;
 import me.zuif.hw2.model.pen.PenType;
-import me.zuif.hw2.repository.PenRepository;
+import me.zuif.hw2.repository.cache.PenRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -58,7 +57,7 @@ class PenServiceTest {
         Pen pen = new Pen("Title", 500, 1000.0, PenBrand.PARKER,
                 PenType.BALLPOINT,
                 PenColor.DARK_BLUE);
-        when(target.findAll()).thenReturn(Arrays.asList(pen));
+        when(target.findAll()).thenReturn(List.of(pen));
         Assertions.assertEquals(pen.getId(), target.findAll().stream().findFirst().get().getId());
 
     }
@@ -73,8 +72,8 @@ class PenServiceTest {
                 PenType.BALLPOINT,
                 PenColor.DARK_BLUE);
         when(repository.findAll()).thenReturn(List.of(parkerPen, noParkerPen));
-        Assertions.assertTrue(target.getAllByBrand(PenBrand.PARKER).
-                stream().filter(pen -> pen.getBrand() != PenBrand.PARKER).collect(Collectors.toList()).size() == 0);
+        Assertions.assertEquals(0, target.getAllByBrand(PenBrand.PARKER).
+                stream().filter(pen -> pen.getBrand() != PenBrand.PARKER).collect(Collectors.toList()).size());
     }
 
     @Test
@@ -86,7 +85,7 @@ class PenServiceTest {
                 PenType.BALLPOINT,
                 PenColor.DARK_BLUE);
         when(repository.findAll()).thenReturn(List.of(parkerPen, noParkerPen));
-        Assertions.assertFalse(target.getAllByBrand(PenBrand.PARKER).size() == 0);
+        Assertions.assertNotEquals(0, target.getAllByBrand(PenBrand.PARKER).size());
     }
 
     @Test
@@ -174,7 +173,7 @@ class PenServiceTest {
                 PenColor.DARK_BLUE);
         when(repository.findById(Mockito.anyString())).thenReturn(Optional.empty());
         when(repository.findAll()).thenReturn(List.of(otherPen, pen));
-        Assertions.assertTrue(target.findByIdOrGetAny("1") != null);
+        Assertions.assertNotNull(target.findByIdOrGetAny("1"));
 
     }
 

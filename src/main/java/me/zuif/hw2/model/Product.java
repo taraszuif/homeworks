@@ -8,8 +8,8 @@ import java.util.UUID;
 @Getter
 @Setter
 public abstract class Product {
-    protected final String id;
-    protected final ProductType type;
+    protected String id;
+    protected ProductType type;
     protected String title;
     protected int count;
     protected double price;
