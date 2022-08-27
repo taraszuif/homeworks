@@ -1,22 +1,34 @@
 package me.zuif.hw2.model.phone;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import me.zuif.hw2.model.Product;
 import me.zuif.hw2.model.ProductType;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Transient;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
+@Entity
+@NoArgsConstructor
 public class Phone extends Product {
-    private final Manufacturer manufacturer;
+    @Column
+    private Manufacturer manufacturer;
+    @Column
     private String model;
+    @Transient
     private LocalDateTime creatingDate;
+    @Transient
     private String currency;
+    @Transient
     private OperationSystem operationSystem;
+    @Transient
     private List<String> details = new ArrayList<>();
 
     public Phone(String title, int count, double price, String model, Manufacturer manufacturer) {
