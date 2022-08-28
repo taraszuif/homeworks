@@ -4,18 +4,17 @@ import me.zuif.hw2.annotations.Autowired;
 import me.zuif.hw2.annotations.Singleton;
 import me.zuif.hw2.config.HibernateSessionFactoryUtil;
 import me.zuif.hw2.model.tea.Tea;
-import me.zuif.hw2.model.tea.Tea;
 import me.zuif.hw2.repository.ProductRepository;
-import me.zuif.hw2.repository.postgres.TeaRepositoryDB;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import java.util.List;
 import java.util.Optional;
+
 @Singleton
 public class TeaRepositoryHibernate implements ProductRepository<Tea> {
-    private final SessionFactory sessionFactory = HibernateSessionFactoryUtil.getSessionFactory();
     private static TeaRepositoryHibernate instance;
+    private final SessionFactory sessionFactory = HibernateSessionFactoryUtil.getSessionFactory();
 
     @Autowired
     public TeaRepositoryHibernate() {
@@ -42,7 +41,7 @@ public class TeaRepositoryHibernate implements ProductRepository<Tea> {
     public void saveAll(List<Tea> teas) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-        for(Tea tea : teas) {
+        for (Tea tea : teas) {
             session.save(tea);
         }
         session.getTransaction().commit();
@@ -52,7 +51,7 @@ public class TeaRepositoryHibernate implements ProductRepository<Tea> {
     @Override
     public List<Tea> findAll() {
         Session session = sessionFactory.openSession();
-        List<Tea> teas= session.createQuery("select tea from Tea tea", Tea.class).getResultList();
+        List<Tea> teas = session.createQuery("select tea from Tea tea", Tea.class).getResultList();
         session.close();
         return teas;
     }
@@ -67,13 +66,13 @@ public class TeaRepositoryHibernate implements ProductRepository<Tea> {
 
     @Override
     public boolean update(Tea tea) {
-        try( Session session = sessionFactory.openSession()){
+        try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             session.merge(tea);
             session.getTransaction().commit();
             session.close();
             return true;
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
@@ -81,13 +80,13 @@ public class TeaRepositoryHibernate implements ProductRepository<Tea> {
 
     @Override
     public boolean delete(String id) {
-        try( Session session = sessionFactory.openSession()){
+        try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             session.remove(findById(id).get());
             session.getTransaction().commit();
             session.close();
             return true;
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }

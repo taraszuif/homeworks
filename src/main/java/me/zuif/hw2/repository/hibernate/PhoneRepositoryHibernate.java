@@ -5,16 +5,16 @@ import me.zuif.hw2.annotations.Singleton;
 import me.zuif.hw2.config.HibernateSessionFactoryUtil;
 import me.zuif.hw2.model.phone.Phone;
 import me.zuif.hw2.repository.ProductRepository;
-import me.zuif.hw2.repository.postgres.PhoneRepositoryDB;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import java.util.List;
 import java.util.Optional;
+
 @Singleton
 public class PhoneRepositoryHibernate implements ProductRepository<Phone> {
-    private final SessionFactory sessionFactory = HibernateSessionFactoryUtil.getSessionFactory();
     private static PhoneRepositoryHibernate instance;
+    private final SessionFactory sessionFactory = HibernateSessionFactoryUtil.getSessionFactory();
 
     @Autowired
     public PhoneRepositoryHibernate() {
@@ -26,6 +26,7 @@ public class PhoneRepositoryHibernate implements ProductRepository<Phone> {
         }
         return instance;
     }
+
     @Override
     public void save(Phone phone) {
         Session session = sessionFactory.openSession();
@@ -39,7 +40,7 @@ public class PhoneRepositoryHibernate implements ProductRepository<Phone> {
     public void saveAll(List<Phone> phones) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-        for(Phone phone : phones) {
+        for (Phone phone : phones) {
             session.save(phone);
         }
         session.getTransaction().commit();
@@ -49,7 +50,7 @@ public class PhoneRepositoryHibernate implements ProductRepository<Phone> {
     @Override
     public List<Phone> findAll() {
         Session session = sessionFactory.openSession();
-        List<Phone> phones= session.createQuery("select phone from Phone phone", Phone.class).getResultList();
+        List<Phone> phones = session.createQuery("select phone from Phone phone", Phone.class).getResultList();
         session.close();
         return phones;
     }
@@ -64,13 +65,13 @@ public class PhoneRepositoryHibernate implements ProductRepository<Phone> {
 
     @Override
     public boolean update(Phone phone) {
-        try( Session session = sessionFactory.openSession()){
+        try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             session.merge(phone);
             session.getTransaction().commit();
             session.close();
             return true;
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
@@ -78,13 +79,13 @@ public class PhoneRepositoryHibernate implements ProductRepository<Phone> {
 
     @Override
     public boolean delete(String id) {
-        try( Session session = sessionFactory.openSession()){
+        try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             session.remove(findById(id).get());
             session.getTransaction().commit();
             session.close();
             return true;
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }

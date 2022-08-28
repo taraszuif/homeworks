@@ -3,12 +3,15 @@ package me.zuif.hw2;
 
 import me.zuif.hw2.command.*;
 import me.zuif.hw2.context.ApplicationContext;
+import me.zuif.hw2.model.Invoice;
 import me.zuif.hw2.model.Product;
 import me.zuif.hw2.model.phone.Manufacturer;
 import me.zuif.hw2.model.phone.Phone;
+import me.zuif.hw2.model.tea.Tea;
 import me.zuif.hw2.service.InvoiceService;
 import me.zuif.hw2.service.PenService;
 import me.zuif.hw2.service.PhoneService;
+import me.zuif.hw2.service.TeaService;
 import me.zuif.hw2.util.UserInputUtil;
 import me.zuif.hw2.util.Utils;
 
@@ -18,13 +21,33 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) {
-        hibernateTest();
+        mongoTest();
+        /* hibernateTest();*/
         /*dbTest();*/
         /*  applicationContextTest();*/
         /*  builderTest();*/
         /* parserTest();*/
         /*streamTest();*/
         /*commandsTest();*/
+    }
+
+    private static void mongoTest() {
+        TeaService teaService = TeaService.getInstance();
+        teaService.createAndSaveProducts(10);
+        Tea tea = teaService.findAll().stream().findAny().get();
+        tea.setTitle("Test");
+        teaService.update(tea);
+        System.out.println(teaService.findAll());
+        teaService.delete(tea.getId());
+        System.out.println(teaService.findAll());
+        InvoiceService service = InvoiceService.getInstance();
+        List<Product> products = new ArrayList<>();
+        products.addAll(teaService.findAll());
+        Invoice invoice = service.createFromProducts(products);
+        System.out.println("invoice count" + service.getInvoiceCount());
+        System.out.println("findAllGreaterSumInvoices: " + service.findAllGreaterSumInvoices(100));
+        System.out.println("sortBySum: " + service.sortBySum());
+        System.out.println("find by id " + service.findById(invoice.getId()));
     }
 
     private static void hibernateTest() {
@@ -40,6 +63,7 @@ public class Main {
         System.out.println(service.findAllGreaterSumInvoices(100));
         System.out.println(service.sortBySum());
     }
+
     private static void dbTest() {
         PhoneService phoneService = PhoneService.getInstance();
         phoneService.createAndSaveProducts(10);

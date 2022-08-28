@@ -3,14 +3,10 @@ package me.zuif.hw2.context;
 import lombok.Getter;
 import me.zuif.hw2.annotations.Autowired;
 import me.zuif.hw2.annotations.Singleton;
-import me.zuif.hw2.repository.hibernate.InvoiceRepositoryHibernate;
-import me.zuif.hw2.repository.hibernate.PenRepositoryHibernate;
-import me.zuif.hw2.repository.hibernate.PhoneRepositoryHibernate;
-import me.zuif.hw2.repository.hibernate.TeaRepositoryHibernate;
-import me.zuif.hw2.repository.postgres.InvoiceRepositoryDB;
-import me.zuif.hw2.repository.postgres.PenRepositoryDB;
-import me.zuif.hw2.repository.postgres.PhoneRepositoryDB;
-import me.zuif.hw2.repository.postgres.TeaRepositoryDB;
+import me.zuif.hw2.repository.mongo.InvoiceRepositoryMongo;
+import me.zuif.hw2.repository.mongo.PenRepositoryMongo;
+import me.zuif.hw2.repository.mongo.PhoneRepositoryMongo;
+import me.zuif.hw2.repository.mongo.TeaRepositoryMongo;
 import org.reflections.Reflections;
 
 import java.lang.reflect.Field;
@@ -82,13 +78,13 @@ public class ApplicationContext {
                         Object repository = null;
                         String name = aClass.getClass().getSimpleName();
                         if (name.startsWith("Tea")) {
-                            repository = cache.get(TeaRepositoryHibernate.class);
+                            repository = cache.get(TeaRepositoryMongo.class);
                         } else if (name.startsWith("Pen")) {
-                            repository = cache.get(PenRepositoryHibernate.class);
+                            repository = cache.get(PenRepositoryMongo.class);
                         } else if (name.startsWith("Phone")) {
-                            repository = cache.get(PhoneRepositoryHibernate.class);
+                            repository = cache.get(PhoneRepositoryMongo.class);
                         } else if (name.startsWith("Invoice")) {
-                            repository = cache.get(InvoiceRepositoryHibernate.class);
+                            repository = cache.get(InvoiceRepositoryMongo.class);
                         }
                         try {
                             constructor.setAccessible(true);
