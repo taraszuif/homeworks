@@ -7,6 +7,7 @@ import me.zuif.hw2.model.Product;
 import me.zuif.hw2.model.phone.Manufacturer;
 import me.zuif.hw2.model.phone.Phone;
 import me.zuif.hw2.service.InvoiceService;
+import me.zuif.hw2.service.PenService;
 import me.zuif.hw2.service.PhoneService;
 import me.zuif.hw2.util.UserInputUtil;
 import me.zuif.hw2.util.Utils;
@@ -17,7 +18,8 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) {
-        dbTest();
+        hibernateTest();
+        /*dbTest();*/
         /*  applicationContextTest();*/
         /*  builderTest();*/
         /* parserTest();*/
@@ -25,9 +27,24 @@ public class Main {
         /*commandsTest();*/
     }
 
+    private static void hibernateTest() {
+        PhoneService phoneService = PhoneService.getInstance();
+        phoneService.createAndSaveProducts(10);
+        PenService penService = PenService.getInstance();
+        penService.createAndSaveProducts(10);
+        InvoiceService service = InvoiceService.getInstance();
+        List<Product> products = new ArrayList<>();
+        products.addAll(phoneService.findAll());
+        service.createFromProducts(products);
+        System.out.println(service.getInvoiceCount());
+        System.out.println(service.findAllGreaterSumInvoices(100));
+        System.out.println(service.sortBySum());
+    }
     private static void dbTest() {
         PhoneService phoneService = PhoneService.getInstance();
         phoneService.createAndSaveProducts(10);
+        PenService penService = PenService.getInstance();
+        penService.createAndSaveProducts(10);
         InvoiceService service = InvoiceService.getInstance();
         List<Product> products = new ArrayList<>();
         products.addAll(phoneService.findAll());

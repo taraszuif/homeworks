@@ -7,6 +7,7 @@ import me.zuif.hw2.model.phone.Manufacturer;
 import me.zuif.hw2.model.phone.OperationSystem;
 import me.zuif.hw2.model.phone.Phone;
 import me.zuif.hw2.repository.ProductRepository;
+import me.zuif.hw2.repository.hibernate.PhoneRepositoryHibernate;
 import me.zuif.hw2.repository.postgres.PhoneRepositoryDB;
 
 import java.time.LocalDateTime;
@@ -27,7 +28,7 @@ public class PhoneService extends ProductService<Phone> {
 
     public static PhoneService getInstance() {
         if (instance == null) {
-            instance = new PhoneService(PhoneRepositoryDB.getInstance());
+            instance = new PhoneService(PhoneRepositoryHibernate.getInstance());
         }
         return instance;
     }

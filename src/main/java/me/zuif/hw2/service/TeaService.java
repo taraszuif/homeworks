@@ -7,6 +7,7 @@ import me.zuif.hw2.model.tea.Tea;
 import me.zuif.hw2.model.tea.TeaBrand;
 import me.zuif.hw2.model.tea.TeaType;
 import me.zuif.hw2.repository.ProductRepository;
+import me.zuif.hw2.repository.hibernate.TeaRepositoryHibernate;
 import me.zuif.hw2.repository.postgres.TeaRepositoryDB;
 
 import java.util.Random;
@@ -23,7 +24,7 @@ public class TeaService extends ProductService<Tea> {
 
     public static TeaService getInstance() {
         if (instance == null) {
-            instance = new TeaService(TeaRepositoryDB.getInstance());
+            instance = new TeaService(TeaRepositoryHibernate.getInstance());
         }
         return instance;
     }
