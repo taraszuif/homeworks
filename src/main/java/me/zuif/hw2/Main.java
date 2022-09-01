@@ -33,7 +33,7 @@ public class Main {
         /*  builderTest();*/
         /* parserTest();*/
         /*streamTest();*/
-        /*commandsTest();*/
+        commandsTest();
     }
 
     private static void mongoTest() {
