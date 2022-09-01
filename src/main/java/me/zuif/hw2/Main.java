@@ -27,6 +27,7 @@ public class Main {
 
         Flyway flyway = FlywayConfig.getInstance();
         flyway.clean();
+
         HibernateSessionFactoryUtil.getSessionFactory();
         flyway.migrate();
         /* mongoTest();*/
