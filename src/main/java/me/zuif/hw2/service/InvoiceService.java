@@ -5,7 +5,7 @@ import me.zuif.hw2.annotations.Singleton;
 import me.zuif.hw2.model.Invoice;
 import me.zuif.hw2.model.Product;
 import me.zuif.hw2.repository.InvoiceRepository;
-import me.zuif.hw2.repository.mongo.InvoiceRepositoryMongo;
+import me.zuif.hw2.repository.hibernate.InvoiceRepositoryHibernate;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ public class InvoiceService {
 
     public static InvoiceService getInstance() {
         if (instance == null) {
-            instance = new InvoiceService(InvoiceRepositoryMongo.getInstance());
+            instance = new InvoiceService(InvoiceRepositoryHibernate.getInstance());
         }
         return instance;
     }
