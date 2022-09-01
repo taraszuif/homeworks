@@ -3,6 +3,7 @@ package me.zuif.hw2;
 
 import me.zuif.hw2.command.*;
 import me.zuif.hw2.config.FlywayConfig;
+import me.zuif.hw2.config.HibernateSessionFactoryUtil;
 import me.zuif.hw2.context.ApplicationContext;
 import me.zuif.hw2.model.Invoice;
 import me.zuif.hw2.model.Product;
@@ -23,8 +24,10 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) {
+
         Flyway flyway = FlywayConfig.getInstance();
         flyway.clean();
+        HibernateSessionFactoryUtil.getSessionFactory();
         flyway.migrate();
         /* mongoTest();*/
         hibernateTest();
