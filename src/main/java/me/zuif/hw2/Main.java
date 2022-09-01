@@ -4,6 +4,7 @@ package me.zuif.hw2;
 import me.zuif.hw2.command.*;
 import me.zuif.hw2.config.FlywayConfig;
 import me.zuif.hw2.config.HibernateSessionFactoryUtil;
+import me.zuif.hw2.config.JDBCConfig;
 import me.zuif.hw2.context.ApplicationContext;
 import me.zuif.hw2.model.Invoice;
 import me.zuif.hw2.model.Product;
@@ -18,6 +19,7 @@ import me.zuif.hw2.util.UserInputUtil;
 import me.zuif.hw2.util.Utils;
 import org.flywaydb.core.Flyway;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +29,11 @@ public class Main {
 
         Flyway flyway = FlywayConfig.getInstance();
         flyway.clean();
+        try {
+            JDBCConfig.getConnection().createStatement().execute("create SCHEMA IF NOT EXISTS hibernate_db");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
         HibernateSessionFactoryUtil.getSessionFactory();
         flyway.migrate();

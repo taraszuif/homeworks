@@ -18,6 +18,7 @@
 
         <property name="show_sql">true</property> <!-- Show SQL in console -->
         <property name="format_sql">true</property> <!-- Show SQL formatted -->
+        <property name="hibernate.default_schema">hibernate_db</property>
         <mapping class="me.zuif.hw2.model.Invoice"/>
         <mapping class="me.zuif.hw2.model.Product"/>
         <mapping class="me.zuif.hw2.model.pen.Pen"/>
