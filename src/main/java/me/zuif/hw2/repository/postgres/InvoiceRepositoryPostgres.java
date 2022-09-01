@@ -1,6 +1,5 @@
 package me.zuif.hw2.repository.postgres;
 
-import lombok.Getter;
 import lombok.SneakyThrows;
 import me.zuif.hw2.annotations.Autowired;
 import me.zuif.hw2.annotations.Singleton;
@@ -26,18 +25,18 @@ import java.time.LocalTime;
 import java.util.*;
 
 @Singleton
-public class InvoiceRepositoryDB implements InvoiceRepository {
+public class InvoiceRepositoryPostgres implements InvoiceRepository {
 
     private static final Connection CONNECTION = JDBCConfig.getConnection();
-    private static InvoiceRepositoryDB instance;
+    private static InvoiceRepositoryPostgres instance;
 
     @Autowired
-    public InvoiceRepositoryDB() {
+    public InvoiceRepositoryPostgres() {
     }
 
-    public static InvoiceRepositoryDB getInstance() {
+    public static InvoiceRepositoryPostgres getInstance() {
         if (instance == null) {
-            instance = new InvoiceRepositoryDB();
+            instance = new InvoiceRepositoryPostgres();
         }
         return instance;
     }
@@ -206,6 +205,7 @@ public class InvoiceRepositoryDB implements InvoiceRepository {
         }
 
     }
+
     public List<Invoice> findAllGreaterSumInvoices(double sum) {
         String select = """
                    SELECT db.invoice.*,
@@ -278,8 +278,9 @@ public class InvoiceRepositoryDB implements InvoiceRepository {
             throw new RuntimeException(e);
         }
     }
-    public Map< Double, Integer> sortBySum() {
-        Map< Double, Integer> count_sum = new HashMap<>();
+
+    public Map<Double, Integer> sortBySum() {
+        Map<Double, Integer> count_sum = new HashMap<>();
         String sortBySum = "SELECT count(id) AS count, invoice.sum FROM db.invoice GROUP BY invoice.sum;";
 
         try (Statement statement = CONNECTION.createStatement()) {
@@ -287,13 +288,14 @@ public class InvoiceRepositoryDB implements InvoiceRepository {
             while (resultSet.next()) {
                 double sum = resultSet.getDouble("sum");
                 int count = resultSet.getInt("count");
-                count_sum.put( sum, count);
+                count_sum.put(sum, count);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return count_sum;
     }
+
     public int getInvoiceCount() {
         String count = "SELECT count(id) AS count FROM db.invoice";
 
@@ -308,6 +310,7 @@ public class InvoiceRepositoryDB implements InvoiceRepository {
             throw new RuntimeException(e);
         }
     }
+
     @Override
     public void update(Invoice invoice) {
         String update = "UPDATE db.invoice SET sum = ?, time = ? WHERE id = ?;";

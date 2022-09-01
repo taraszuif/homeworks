@@ -4,10 +4,7 @@ import me.zuif.hw2.annotations.Autowired;
 import me.zuif.hw2.annotations.Singleton;
 import me.zuif.hw2.config.HibernateSessionFactoryUtil;
 import me.zuif.hw2.model.Invoice;
-import me.zuif.hw2.model.Product;
-import me.zuif.hw2.model.ProductType;
 import me.zuif.hw2.repository.InvoiceRepository;
-import me.zuif.hw2.repository.postgres.InvoiceRepositoryDB;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -15,13 +12,15 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import java.sql.ResultSet;
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Singleton
 public class InvoiceRepositoryHibernate implements InvoiceRepository {
-    private final SessionFactory sessionFactory = HibernateSessionFactoryUtil.getSessionFactory();
     private static InvoiceRepositoryHibernate instance;
+    private final SessionFactory sessionFactory = HibernateSessionFactoryUtil.getSessionFactory();
 
     @Autowired
     public InvoiceRepositoryHibernate() {
@@ -63,8 +62,8 @@ public class InvoiceRepositoryHibernate implements InvoiceRepository {
     @Override
     public List<Invoice> findAllGreaterSumInvoices(double sum) {
         Session session = sessionFactory.openSession();
-        List<Invoice> greater =  session.createQuery("select invoice from Invoice invoice where invoice.sum > :sum",
-                        Invoice.class).setParameter("sum", sum).getResultList();
+        List<Invoice> greater = session.createQuery("select invoice from Invoice invoice where invoice.sum > :sum",
+                Invoice.class).setParameter("sum", sum).getResultList();
         session.close();
         return greater;
     }
@@ -79,7 +78,7 @@ public class InvoiceRepositoryHibernate implements InvoiceRepository {
     }
 
     @Override
-    public Map< Double, Integer> sortBySum() {
+    public Map<Double, Integer> sortBySum() {
         Session session = sessionFactory.openSession();
 
         CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
@@ -91,9 +90,9 @@ public class InvoiceRepositoryHibernate implements InvoiceRepository {
 
         TypedQuery<Object[]> query = session.createQuery(criteriaQuery);
         List<Object[]> resultList = query.getResultList();
-        Map< Double, Integer> result = new LinkedHashMap<>();
+        Map<Double, Integer> result = new LinkedHashMap<>();
         for (Object[] objects : resultList) {
-            result.put( (Double) objects[1], ((Long) objects[0]).intValue());
+            result.put((Double) objects[1], ((Long) objects[0]).intValue());
         }
         session.close();
         return result;

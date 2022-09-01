@@ -4,8 +4,10 @@ import lombok.SneakyThrows;
 import me.zuif.hw2.annotations.Autowired;
 import me.zuif.hw2.annotations.Singleton;
 import me.zuif.hw2.config.JDBCConfig;
-import me.zuif.hw2.model.phone.Manufacturer;
-import me.zuif.hw2.model.phone.Phone;
+import me.zuif.hw2.model.pen.Pen;
+import me.zuif.hw2.model.pen.PenBrand;
+import me.zuif.hw2.model.pen.PenColor;
+import me.zuif.hw2.model.pen.PenType;
 import me.zuif.hw2.repository.ProductRepository;
 import org.apache.commons.lang3.EnumUtils;
 
@@ -15,28 +17,29 @@ import java.util.List;
 import java.util.Optional;
 
 @Singleton
-public class PhoneRepositoryDB implements ProductRepository<Phone> {
+public class PenRepositoryPostgres implements ProductRepository<Pen> {
     private static final Connection CONNECTION = JDBCConfig.getConnection();
 
-    private static PhoneRepositoryDB instance;
+    private static PenRepositoryPostgres instance;
 
     @Autowired
-    public PhoneRepositoryDB() {
+    public PenRepositoryPostgres() {
+
     }
 
-    public static PhoneRepositoryDB getInstance() {
+    public static PenRepositoryPostgres getInstance() {
         if (instance == null) {
-            instance = new PhoneRepositoryDB();
+            instance = new PenRepositoryPostgres();
         }
         return instance;
     }
 
 
     @Override
-    public void save(Phone phone) {
-        String sql = "INSERT INTO db.Phone (id, count, price, manufacturer, title, model) VALUES (?, ?, ?, ?, ?, ?)";
+    public void save(Pen pen) {
+        String sql = "INSERT INTO db.Pen (id, count, price, title, brand, type, color) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (final PreparedStatement statement = CONNECTION.prepareStatement(sql)) {
-            setObjectFields(statement, phone);
+            setObjectFields(statement, pen);
             statement.execute();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -44,13 +47,13 @@ public class PhoneRepositoryDB implements ProductRepository<Phone> {
     }
 
     @Override
-    public void saveAll(List<Phone> phones) {
-        String sql = "INSERT INTO db.Phone (id, count, price, manufacturer, title, model) VALUES (?, ?, ?, ?, ?, ?)";
+    public void saveAll(List<Pen> pens) {
+        String sql = "INSERT INTO \"db\".Pen (id, count, price, title, brand, type, color) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (final PreparedStatement statement = CONNECTION.prepareStatement(sql)) {
             CONNECTION.setAutoCommit(false);
-            for (Phone phone : phones) {
-                setObjectFields(statement, phone);
+            for (Pen pen : pens) {
+                setObjectFields(statement, pen);
                 statement.addBatch();
             }
             statement.executeBatch();
@@ -62,10 +65,10 @@ public class PhoneRepositoryDB implements ProductRepository<Phone> {
     }
 
     @Override
-    public List<Phone> findAll() {
-        final List<Phone> result = new ArrayList<>();
+    public List<Pen> findAll() {
+        final List<Pen> result = new ArrayList<>();
         try (final Statement statement = CONNECTION.createStatement()) {
-            final ResultSet resultSet = statement.executeQuery("SELECT * FROM db.Phone");
+            final ResultSet resultSet = statement.executeQuery("SELECT * FROM \"db\".Pen");
             while (resultSet.next()) {
                 result.add(setFieldsToObject(resultSet));
             }
@@ -77,20 +80,21 @@ public class PhoneRepositoryDB implements ProductRepository<Phone> {
     }
 
     @SneakyThrows
-    private void setObjectFields(final PreparedStatement statement, final Phone phone) {
-        statement.setString(1, phone.getId());
-        statement.setInt(2, phone.getCount());
-        statement.setDouble(3, phone.getPrice());
-        statement.setString(4, phone.getManufacturer().name());
-        statement.setString(5, phone.getTitle());
-        statement.setString(6, phone.getModel());
+    private void setObjectFields(final PreparedStatement statement, final Pen pen) {
+        statement.setString(1, pen.getId());
+        statement.setInt(2, pen.getCount());
+        statement.setDouble(3, pen.getPrice());
+        statement.setString(4, pen.getTitle());
+        statement.setString(5, pen.getBrand().toString());
+        statement.setString(6, pen.getPenType().toString());
+        statement.setString(7, pen.getColor().toString());
     }
 
     @Override
-    public boolean update(Phone phone) {
-        String update = "UPDATE db.Phone SET count = ?, price = ?, manufacturer = ?, title = ?, model = ?  WHERE id = ?;";
+    public boolean update(Pen pen) {
+        String update = "UPDATE db.Pen SET count = ?, price = ?, title = ?, brand = ?, type = ?, color = ?, WHERE id = ?";
         try (PreparedStatement statement = CONNECTION.prepareStatement(update)) {
-            setObjectFields(statement, phone);
+            setObjectFields(statement, pen);
             statement.executeUpdate();
             return true;
         } catch (SQLException e) {
@@ -100,7 +104,7 @@ public class PhoneRepositoryDB implements ProductRepository<Phone> {
 
     @Override
     public boolean delete(String id) {
-        String sql = "DELETE FROM db.Phone WHERE id = ?";
+        String sql = "DELETE FROM \"db\".Pen WHERE id = ?";
         try (final PreparedStatement statement = CONNECTION.prepareStatement(sql)) {
             statement.setString(1, id);
             return statement.execute();
@@ -110,31 +114,32 @@ public class PhoneRepositoryDB implements ProductRepository<Phone> {
     }
 
     @SneakyThrows
-    private Phone setFieldsToObject(final ResultSet resultSet) {
-        final String model = resultSet.getString("model");
+    private Pen setFieldsToObject(final ResultSet resultSet) {
         int count = resultSet.getInt("count");
         double price = resultSet.getDouble("price");
         String title = resultSet.getString("title");
-        Manufacturer manufacturer = EnumUtils.getEnum(Manufacturer.class, resultSet.getString("manufacturer"), Manufacturer.UNKNOWN);
-        Phone phone = new Phone(title, count, price, model, manufacturer);
-        phone.setId(resultSet.getString("id"));
-        return phone;
+        PenType type = EnumUtils.getEnum(PenType.class, resultSet.getString("type"), PenType.UNKNOWN);
+        PenBrand brand = EnumUtils.getEnum(PenBrand.class, resultSet.getString("brand"), PenBrand.UNKNOWN);
+        PenColor color = EnumUtils.getEnum(PenColor.class, resultSet.getString("color"), PenColor.UNKNOWN);
+        Pen pen = new Pen(title, count, price, brand, type, color);
+        pen.setId(resultSet.getString("id"));
+        return pen;
     }
 
     @Override
-    public Optional<Phone> findById(String id) {
-        String sql = "SELECT * FROM db.Phone WHERE id = ?";
-        Optional<Phone> phone = Optional.empty();
+    public Optional<Pen> findById(String id) {
+        String sql = "SELECT * FROM \"db\".Pen WHERE id = ?";
+        Optional<Pen> pen = Optional.empty();
 
         try (final PreparedStatement statement = CONNECTION.prepareStatement(sql)) {
             statement.setString(1, id);
             final ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                phone = Optional.of(setFieldsToObject(resultSet));
+                pen = Optional.of(setFieldsToObject(resultSet));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return phone;
+        return pen;
     }
 }

@@ -3,19 +3,18 @@ package me.zuif.hw2.repository.hibernate;
 import me.zuif.hw2.annotations.Autowired;
 import me.zuif.hw2.annotations.Singleton;
 import me.zuif.hw2.config.HibernateSessionFactoryUtil;
-import me.zuif.hw2.model.Invoice;
 import me.zuif.hw2.model.pen.Pen;
 import me.zuif.hw2.repository.ProductRepository;
-import me.zuif.hw2.repository.postgres.PenRepositoryDB;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import java.util.List;
 import java.util.Optional;
+
 @Singleton
 public class PenRepositoryHibernate implements ProductRepository<Pen> {
-    private final SessionFactory sessionFactory = HibernateSessionFactoryUtil.getSessionFactory();
     private static PenRepositoryHibernate instance;
+    private final SessionFactory sessionFactory = HibernateSessionFactoryUtil.getSessionFactory();
 
     @Autowired
     public PenRepositoryHibernate() {
@@ -27,6 +26,7 @@ public class PenRepositoryHibernate implements ProductRepository<Pen> {
         }
         return instance;
     }
+
     @Override
     public void save(Pen pen) {
         Session session = sessionFactory.openSession();
@@ -40,7 +40,7 @@ public class PenRepositoryHibernate implements ProductRepository<Pen> {
     public void saveAll(List<Pen> pens) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-        for(Pen pen : pens) {
+        for (Pen pen : pens) {
             session.save(pen);
         }
         session.getTransaction().commit();
@@ -50,7 +50,7 @@ public class PenRepositoryHibernate implements ProductRepository<Pen> {
     @Override
     public List<Pen> findAll() {
         Session session = sessionFactory.openSession();
-        List<Pen> pens= session.createQuery("select pen from Pen pen", Pen.class).getResultList();
+        List<Pen> pens = session.createQuery("select pen from Pen pen", Pen.class).getResultList();
         session.close();
         return pens;
     }
@@ -65,27 +65,27 @@ public class PenRepositoryHibernate implements ProductRepository<Pen> {
 
     @Override
     public boolean update(Pen pen) {
-       try( Session session = sessionFactory.openSession()){
+        try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             session.merge(pen);
             session.getTransaction().commit();
             session.close();
             return true;
-        }catch (Exception e) {
-           e.printStackTrace();
-           return false;
-       }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override
     public boolean delete(String id) {
-        try( Session session = sessionFactory.openSession()){
+        try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             session.remove(findById(id).get());
             session.getTransaction().commit();
             session.close();
             return true;
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }

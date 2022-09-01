@@ -4,10 +4,9 @@ import lombok.SneakyThrows;
 import me.zuif.hw2.annotations.Autowired;
 import me.zuif.hw2.annotations.Singleton;
 import me.zuif.hw2.config.JDBCConfig;
-import me.zuif.hw2.model.pen.Pen;
-import me.zuif.hw2.model.pen.PenBrand;
-import me.zuif.hw2.model.pen.PenColor;
-import me.zuif.hw2.model.pen.PenType;
+import me.zuif.hw2.model.tea.Tea;
+import me.zuif.hw2.model.tea.TeaBrand;
+import me.zuif.hw2.model.tea.TeaType;
 import me.zuif.hw2.repository.ProductRepository;
 import org.apache.commons.lang3.EnumUtils;
 
@@ -17,29 +16,29 @@ import java.util.List;
 import java.util.Optional;
 
 @Singleton
-public class PenRepositoryDB implements ProductRepository<Pen> {
+public class TeaRepositoryPostgres implements ProductRepository<Tea> {
     private static final Connection CONNECTION = JDBCConfig.getConnection();
 
-    private static PenRepositoryDB instance;
+    private static TeaRepositoryPostgres instance;
 
     @Autowired
-    public PenRepositoryDB() {
+    public TeaRepositoryPostgres() {
 
     }
 
-    public static PenRepositoryDB getInstance() {
+    public static TeaRepositoryPostgres getInstance() {
         if (instance == null) {
-            instance = new PenRepositoryDB();
+            instance = new TeaRepositoryPostgres();
         }
         return instance;
     }
 
 
     @Override
-    public void save(Pen pen) {
-        String sql = "INSERT INTO db.Pen (id, count, price, title, brand, type, color) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    public void save(Tea tea) {
+        String sql = "INSERT INTO \"db\".Tea (id, count, price, title, brand, type) VALUES (?, ?,  ?, ?, ?, ?)";
         try (final PreparedStatement statement = CONNECTION.prepareStatement(sql)) {
-            setObjectFields(statement, pen);
+            setObjectFields(statement, tea);
             statement.execute();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -47,13 +46,13 @@ public class PenRepositoryDB implements ProductRepository<Pen> {
     }
 
     @Override
-    public void saveAll(List<Pen> pens) {
-        String sql = "INSERT INTO \"db\".Pen (id, count, price, title, brand, type, color) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    public void saveAll(List<Tea> teas) {
+        String sql = "INSERT INTO \"db\".Tea (id, count, price, title, brand, type) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (final PreparedStatement statement = CONNECTION.prepareStatement(sql)) {
             CONNECTION.setAutoCommit(false);
-            for (Pen pen : pens) {
-                setObjectFields(statement, pen);
+            for (Tea tea : teas) {
+                setObjectFields(statement, tea);
                 statement.addBatch();
             }
             statement.executeBatch();
@@ -65,10 +64,10 @@ public class PenRepositoryDB implements ProductRepository<Pen> {
     }
 
     @Override
-    public List<Pen> findAll() {
-        final List<Pen> result = new ArrayList<>();
+    public List<Tea> findAll() {
+        final List<Tea> result = new ArrayList<>();
         try (final Statement statement = CONNECTION.createStatement()) {
-            final ResultSet resultSet = statement.executeQuery("SELECT * FROM \"db\".Pen");
+            final ResultSet resultSet = statement.executeQuery("SELECT * FROM \"db\".Tea");
             while (resultSet.next()) {
                 result.add(setFieldsToObject(resultSet));
             }
@@ -80,21 +79,20 @@ public class PenRepositoryDB implements ProductRepository<Pen> {
     }
 
     @SneakyThrows
-    private void setObjectFields(final PreparedStatement statement, final Pen pen) {
-        statement.setString(1, pen.getId());
-        statement.setInt(2, pen.getCount());
-        statement.setDouble(3, pen.getPrice());
-        statement.setString(4, pen.getTitle());
-        statement.setString(5, pen.getBrand().toString());
-        statement.setString(6, pen.getPenType().toString());
-        statement.setString(7, pen.getColor().toString());
+    private void setObjectFields(final PreparedStatement statement, final Tea tea) {
+        statement.setString(1, tea.getId());
+        statement.setInt(2, tea.getCount());
+        statement.setDouble(3, tea.getPrice());
+        statement.setString(4, tea.getTitle());
+        statement.setString(5, tea.getBrand().toString());
+        statement.setString(6, tea.getTeaType().toString());
     }
 
     @Override
-    public boolean update(Pen pen) {
-        String update = "UPDATE db.Pen SET count = ?, price = ?, title = ?, brand = ?, type = ?, color = ?, WHERE id = ?";
+    public boolean update(Tea tea) {
+        String update = "UPDATE \"db\".Tea SET count = ?, price = ?, title = ?, brand = ?, type = ?  WHERE id = ?;";
         try (PreparedStatement statement = CONNECTION.prepareStatement(update)) {
-            setObjectFields(statement, pen);
+            setObjectFields(statement, tea);
             statement.executeUpdate();
             return true;
         } catch (SQLException e) {
@@ -104,7 +102,7 @@ public class PenRepositoryDB implements ProductRepository<Pen> {
 
     @Override
     public boolean delete(String id) {
-        String sql = "DELETE FROM \"db\".Pen WHERE id = ?";
+        String sql = "DELETE FROM \"db\".Tea WHERE id = ?";
         try (final PreparedStatement statement = CONNECTION.prepareStatement(sql)) {
             statement.setString(1, id);
             return statement.execute();
@@ -114,32 +112,32 @@ public class PenRepositoryDB implements ProductRepository<Pen> {
     }
 
     @SneakyThrows
-    private Pen setFieldsToObject(final ResultSet resultSet) {
+    private Tea setFieldsToObject(final ResultSet resultSet) {
         int count = resultSet.getInt("count");
         double price = resultSet.getDouble("price");
         String title = resultSet.getString("title");
-        PenType type = EnumUtils.getEnum(PenType.class, resultSet.getString("type"), PenType.UNKNOWN);
-        PenBrand brand = EnumUtils.getEnum(PenBrand.class, resultSet.getString("brand"), PenBrand.UNKNOWN);
-        PenColor color = EnumUtils.getEnum(PenColor.class, resultSet.getString("color"), PenColor.UNKNOWN);
-        Pen pen = new Pen(title, count, price, brand, type, color);
-        pen.setId(resultSet.getString("id"));
-        return pen;
+        TeaType type = EnumUtils.getEnum(TeaType.class, resultSet.getString("type"), TeaType.UNKNOWN);
+        TeaBrand brand = EnumUtils.getEnum(TeaBrand.class, resultSet.getString("brand"), TeaBrand.UNKNOWN);
+        Tea tea = new Tea(title, count, price, brand, type);
+        tea.setId(resultSet.getString("id"));
+        return tea;
     }
 
     @Override
-    public Optional<Pen> findById(String id) {
-        String sql = "SELECT * FROM \"db\".Pen WHERE id = ?";
-        Optional<Pen> pen = Optional.empty();
+    public Optional<Tea> findById(String id) {
+        String sql = "SELECT * FROM \"db\".Tea WHERE id = ?";
+        Optional<Tea> tea = Optional.empty();
 
         try (final PreparedStatement statement = CONNECTION.prepareStatement(sql)) {
             statement.setString(1, id);
             final ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                pen = Optional.of(setFieldsToObject(resultSet));
+                tea = Optional.of(setFieldsToObject(resultSet));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return pen;
+        return tea;
     }
+
 }
