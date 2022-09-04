@@ -8,7 +8,7 @@ import me.zuif.hw2.model.pen.PenBrand;
 import me.zuif.hw2.model.pen.PenColor;
 import me.zuif.hw2.model.pen.PenType;
 import me.zuif.hw2.repository.ProductRepository;
-import me.zuif.hw2.repository.mongo.PenRepositoryMongo;
+import me.zuif.hw2.repository.hibernate.PenRepositoryHibernate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +27,7 @@ public class PenService extends ProductService<Pen> {
 
     public static PenService getInstance() {
         if (instance == null) {
-            instance = new PenService(PenRepositoryMongo.getInstance());
+            instance = new PenService(PenRepositoryHibernate.getInstance());
         }
         return instance;
     }

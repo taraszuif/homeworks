@@ -2,6 +2,9 @@ package me.zuif.hw2;
 
 
 import me.zuif.hw2.command.*;
+import me.zuif.hw2.config.FlywayConfig;
+import me.zuif.hw2.config.HibernateSessionFactoryUtil;
+import me.zuif.hw2.config.JDBCConfig;
 import me.zuif.hw2.context.ApplicationContext;
 import me.zuif.hw2.model.Invoice;
 import me.zuif.hw2.model.Product;
@@ -14,26 +17,43 @@ import me.zuif.hw2.service.PhoneService;
 import me.zuif.hw2.service.TeaService;
 import me.zuif.hw2.util.UserInputUtil;
 import me.zuif.hw2.util.Utils;
+import org.flywaydb.core.Flyway;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
 
     public static void main(String[] args) {
-        mongoTest();
-        /* hibernateTest();*/
+
+        Flyway flyway = FlywayConfig.getInstance();
+        flyway.clean();
+        try {
+            JDBCConfig.getConnection().createStatement().execute("create SCHEMA IF NOT EXISTS hibernate_db");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        HibernateSessionFactoryUtil.getSessionFactory();
+        flyway.migrate();
+        /* mongoTest();*/
+        hibernateTest();
         /*dbTest();*/
         /*  applicationContextTest();*/
         /*  builderTest();*/
         /* parserTest();*/
         /*streamTest();*/
-        /*commandsTest();*/
+        commandsTest();
     }
 
     private static void mongoTest() {
         TeaService teaService = TeaService.getInstance();
         teaService.createAndSaveProducts(10);
+        PenService penService = PenService.getInstance();
+        penService.createAndSaveProducts(10);
+        PhoneService phoneService = PhoneService.getInstance();
+        phoneService.createAndSaveProducts(10);
         Tea tea = teaService.findAll().stream().findAny().get();
         tea.setTitle("Test");
         teaService.update(tea);
@@ -51,10 +71,12 @@ public class Main {
     }
 
     private static void hibernateTest() {
-        PhoneService phoneService = PhoneService.getInstance();
-        phoneService.createAndSaveProducts(10);
+        TeaService teaService = TeaService.getInstance();
+        teaService.createAndSaveProducts(10);
         PenService penService = PenService.getInstance();
         penService.createAndSaveProducts(10);
+        PhoneService phoneService = PhoneService.getInstance();
+        phoneService.createAndSaveProducts(10);
         InvoiceService service = InvoiceService.getInstance();
         List<Product> products = new ArrayList<>();
         products.addAll(phoneService.findAll());

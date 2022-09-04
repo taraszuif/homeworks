@@ -5,10 +5,13 @@
 <hibernate-configuration>
     <session-factory>
 
-        <property name="connection.url">jdbc:postgresql://localhost:5432/postgres</property> <!-- BD Mane -->
+        <property name="connection.url">
+            jdbc:postgresql://ec2-34-235-198-25.compute-1.amazonaws.com:5432/ddd88hlsi18tn7
+        </property> <!-- BD Mane -->
         <property name="connection.driver_class">org.postgresql.Driver</property> <!-- DB Driver -->
-        <property name="connection.username">postgres</property> <!-- DB User -->
-        <property name="connection.password">root</property> <!-- DB Password -->
+        <property name="connection.username">ihgfwqtptjwyli</property> <!-- DB User -->
+        <property name="connection.password">a03f2586d8b5550d68fd62f29728add992e6c44e15e528a5a1b51bd24de03eea
+        </property> <!-- DB Password -->
 
         <property name="dialect">org.hibernate.dialect.PostgreSQL82Dialect</property> <!-- DB Dialect -->
         <property name="hbm2ddl.auto">update</property> <!-- create / create-drop / update -->
