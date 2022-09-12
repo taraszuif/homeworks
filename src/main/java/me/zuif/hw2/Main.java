@@ -15,6 +15,7 @@ import me.zuif.hw2.service.InvoiceService;
 import me.zuif.hw2.service.PenService;
 import me.zuif.hw2.service.PhoneService;
 import me.zuif.hw2.service.TeaService;
+import me.zuif.hw2.util.SummerThread;
 import me.zuif.hw2.util.UserInputUtil;
 import me.zuif.hw2.util.Utils;
 import org.flywaydb.core.Flyway;
@@ -25,8 +26,38 @@ import java.util.List;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
+        concurrencyTest();
+        /* mongoTest();*/
+        /* hibernateTest();*/
+        /*dbTest();*/
+        /*  applicationContextTest();*/
+        /*  builderTest();*/
+        /* parserTest();*/
+        /*streamTest();*/
+        /*commandsTest();*/
+    }
 
+    private static void concurrencyTest() throws Exception {
+        for (int i = 0; i < 50; i++) {
+            int finalI = i;
+            Thread t = new Thread(() -> {
+                try {
+
+                    Thread.sleep(1000 - 10 * finalI);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+
+                System.out.println("Hello from thread " + Thread.currentThread().getName() + "(" + finalI + ")");
+            });
+            t.start();
+        }
+        List<Integer> ints = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+        System.out.println("Sum of " + ints + " = " + twoThreadSum(ints));
+    }
+
+    private static void herokuTest() {
         Flyway flyway = FlywayConfig.getInstance();
         flyway.clean();
         try {
@@ -37,14 +68,6 @@ public class Main {
 
         HibernateSessionFactoryUtil.getSessionFactory();
         flyway.migrate();
-        /* mongoTest();*/
-        hibernateTest();
-        /*dbTest();*/
-        /*  applicationContextTest();*/
-        /*  builderTest();*/
-        /* parserTest();*/
-        /*streamTest();*/
-        commandsTest();
     }
 
     private static void mongoTest() {
@@ -117,7 +140,6 @@ public class Main {
         System.out.println(phone);
     }
 
-
     private static void commandsTest() {
         final Commands[] values = Commands.values();
         final List<String> names = Utils.getNamesOfEnum(values);
@@ -135,6 +157,15 @@ public class Main {
 
         } while (!exit);
 
+    }
+
+    private static int twoThreadSum(List<Integer> list) throws Exception {
+        SummerThread first = new SummerThread(false, list);
+        SummerThread second = new SummerThread(true, list);
+        first.start();
+        second.start();
+        while (!first.getStopped().get() || !second.getStopped().get()) ;
+        return first.getSum() + second.getSum();
     }
 
 
