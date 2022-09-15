@@ -160,8 +160,8 @@ public class Main {
     }
 
     private static int twoThreadSum(List<Integer> list) throws Exception {
-        SummerThread first = new SummerThread(false, list);
-        SummerThread second = new SummerThread(true, list);
+        SummerThread first = new SummerThread(list.subList(0, list.size() / 2));
+        SummerThread second = new SummerThread(list.subList(list.size() / 2, list.size()));
         first.start();
         second.start();
         while (!first.getStopped().get() || !second.getStopped().get()) ;
