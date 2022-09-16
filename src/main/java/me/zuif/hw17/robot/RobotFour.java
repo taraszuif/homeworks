@@ -33,8 +33,10 @@ public class RobotFour extends Thread {
 
         Factory factory = Factory.getInstance();
         factory.setProgrammedMicrochipsCount(factory.getProgrammedMicrochipsCount() + 1);
-        System.out.println("RobotFour add programmed microchips to factory. Total: " + factory.getProgrammedMicrochipsCount());
+        System.out.println("RobotFour add programmed microchips to factory and start RobotFive. Total: " + factory.getProgrammedMicrochipsCount());
         microchipsProgress = 0;
+        RobotFive robotFive = new RobotFive();
+        robotFive.start();
         System.out.println("RobotFour disabled");
         interrupt();
     }

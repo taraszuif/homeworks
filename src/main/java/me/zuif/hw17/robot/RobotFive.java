@@ -32,8 +32,10 @@ public class RobotFive extends Thread {
                 throw new RuntimeException(e);
             }
             if (detailFormProgress >= 100) {
+                factory.setProgrammedMicrochipsCount(factory.getProgrammedMicrochipsCount() - 1);
+                factory.setDetailConstructionCount(factory.getDetailConstructionCount() - 1);
                 factory.setDetailCount(factory.getDetailCount() + 1);
-                System.out.println("RobotFive end make detail and add it to factory. Total details: " + factory.getDetailCount());
+                System.out.println("RobotFive end make detail and add it to factory, remove microchip and detail construction. Total details: " + factory.getDetailCount());
                 detailFormProgress = 0;
             }
         }
