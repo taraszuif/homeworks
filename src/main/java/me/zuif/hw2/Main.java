@@ -27,7 +27,7 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        concurrencyTest();
+        /* concurrencyTest();*/
         /* mongoTest();*/
         /* hibernateTest();*/
         /*dbTest();*/
