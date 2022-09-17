@@ -27,10 +27,6 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        int hours = 60;
-        int days = (int) Math.floor(hours / 24);
-        int hours1 = hours - days * 24;
-        System.out.println("days " + days + " hours " + hours1);
         /* concurrencyTest();*/
         /* mongoTest();*/
         /* hibernateTest();*/
