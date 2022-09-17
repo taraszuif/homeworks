@@ -24,7 +24,7 @@ public class RobotThree extends Thread {
     public void run() {
         System.out.println("RobotThree started. Thread: " + Thread.currentThread().getName());
         while (isAlive.get()) {
-            int progress = new Random().nextInt(5, 11);
+            int progress = new Random().nextInt(10, 21);
             detailConstructionAssemblyProgress += progress;
             System.out.println("RobotThree progress by " + progress + " and sleep 2 sec. Total: " + detailConstructionAssemblyProgress);
 
